@@ -1,7 +1,25 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
-</web-app>
+  <display-name>PowerMagpie Web Application</display-name>
+    <servlet>
+        <servlet-name>Store</servlet-name>
+        <servlet-class>uk.ac.open.powermagpie.servlet.Store</servlet-class>
+        <init-param>
+            <param-name>talis.store</param-name>
+            <param-value>http://api.talis.com/stores/lgridinoc-dev1</param-value>
+        </init-param>
+        <init-param>
+            <param-name>talis.username</param-name>
+            <param-value>lgridinoc</param-value>
+        </init-param>
+        <init-param>
+            <param-name>talis.password</param-name>
+            <param-value></param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Store</servlet-name>
+        <url-pattern>/store</url-pattern>
+    </servlet-mapping>
+    </web-app>

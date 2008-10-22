@@ -78,7 +78,7 @@
 						+ "document.getElementsByTagName('head')[0].appendChild(s);"
 						+ "}());",
 						
-		profile: 	namespace + '/profiles/default.js', 
+		profile: 	namespace + '/Profiles/default.js', 
 		
 		version: 	'0.1.4'
 	};
