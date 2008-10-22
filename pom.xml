@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>uk.ac.open.powermagpie</groupId>
+    <artifactId>PowerMagpie</artifactId>
+    <packaging>pom</packaging>
+    <version>2.0</version>
+    <name>PowerMagpie</name>
+    <url>http://purl.org/net/powermagpie</url>
+    <description>A framework for semantic browsing</description>
+    <organization>
+        <name>Knowledge Media Institute</name>
+        <url>http://kmi.open.ac.uk/</url>
+    </organization>
+    <scm>
+        <connection>scm:hg:http://mercurial.intuxication.org/hg/powermagpie/</connection>
+        <url>http://mercurial.intuxication.org/hg/powermagpie/</url>
+    </scm>
+    <issueManagement>
+        <system>Lighthouse</system>
+        <url>http://powermagpie.lighthouseapp.com/</url>
+    </issueManagement> 
+    <developers>
+        <developer>
+            <id>laurian</id>
+            <name>Laurian Gridinoc</name>
+            <email>laurian@gridinoc.name</email>
+            <url>http://purl.org/net/laur</url>
+            <organization>Knowledge Media Institute</organization>
+            <organizationUrl>http://kmi.open.ac.uk/</organizationUrl>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>0</timezone>
+        </developer>
+    </developers>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <siteDirectory>${basedir}/src/site</siteDirectory>
+                    <inputEncoding>UTF-8</inputEncoding>
+                    <outputEncoding>UTF-8</outputEncoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-doap-plugin</artifactId>
+                <configuration>
+                    <category>XXXbuild-management</category>
+                    <language>Java</language>
+                    <doapFile>${basedir}/src/site/doap.rdf</doapFile>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0.2</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <modules>
+        <module>WebApp</module>
+    </modules>
+</project>
