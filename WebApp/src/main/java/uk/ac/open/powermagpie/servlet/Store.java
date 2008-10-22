@@ -51,7 +51,7 @@ public class Store extends HttpServlet {
 
             //test
 
-            System.out.println("reading n-triples");
+            /*System.out.println("reading n-triples");
             Model model = ModelFactory.createDefaultModel();
             model.read(new ByteArrayInputStream(
                     "<http://example.com/#xpointer(//p[5])> <http://www.w3.org/2000/01/rdf-schema#seeAlso> <http://purl.org/net/powermagpie/store/c36ec281-5650-0001-19dd-c2001fc06d00> . \n".getBytes()), null, "N-TRIPLE");
@@ -61,7 +61,7 @@ public class Store extends HttpServlet {
 
             System.out.println("writing rdf/xml");
             model.write(System.out);
-
+*/
             //test
 
 
