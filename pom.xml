@@ -12,10 +12,10 @@
         <name>Knowledge Media Institute</name>
         <url>http://kmi.open.ac.uk/</url>
     </organization>
-    <scm>
+    <!-- scm>
         <connection>scm:hg:http://mercurial.intuxication.org/hg/powermagpie/</connection>
         <url>http://mercurial.intuxication.org/hg/powermagpie/</url>
-    </scm>
+    </scm -->
     <issueManagement>
         <system>Lighthouse</system>
         <url>http://powermagpie.lighthouseapp.com/</url>
