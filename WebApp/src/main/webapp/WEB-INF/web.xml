@@ -15,11 +15,27 @@
         </init-param>
         <init-param>
             <param-name>talis.password</param-name>
-            <param-value></param-value>
+            <param-value/>
+        </init-param>
+    </servlet>
+    <servlet>
+        <servlet-name>Mount</servlet-name>
+        <servlet-class>uk.ac.open.powermagpie.servlet.Mount</servlet-class>
+        <init-param>
+            <param-name>jar</param-name>
+            <param-value>jarrrr</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
         <servlet-name>Store</servlet-name>
         <url-pattern>/store</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Mount</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+        <welcome-file>index.xml</welcome-file>
+    </welcome-file-list>
     </web-app>
