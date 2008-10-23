@@ -80,6 +80,7 @@
         </plugins>
     </build>
     <modules>
+        <module>FrontEnd</module>
         <module>WebApp</module>
     </modules>
 </project>
