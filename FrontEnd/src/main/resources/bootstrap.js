@@ -78,7 +78,7 @@
 						+ "s.charset='UTF-8';"
 						+ "s.type='text/javascript';"
 						+ "s.src='" + window[namespace].base + "/bootstrap.js';"
-						+ "window['" + namespace + "'].initBase='" + window[namespace].base + "';"
+						+ "window['" + namespace + "']={initBase: '" + window[namespace].base + "'};" //TODO kills toggle!
 						+ "document.getElementsByTagName('head')[0].appendChild(s);"
 						+ "}());";
 					},
