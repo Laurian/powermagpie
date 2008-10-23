@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="#stylesheet" type="text/css"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd" 
+[ 
+	<!-- ATTLIST a target CDATA #IMPLIED -->
+]>
+<html	version="XHTML+RDFa 1.0"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:foaf="http://xmlns.com/foaf/0.1/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xml:lang="en-GB">
+  <head	version="XHTML+RDFa 1.0"
+        profile="http://www.w3.org/1999/xhtml/vocab">
+    <!-- base href="http://purl.org/net/powermagpie" / -->
+    <title>PowerMagpie</title>
+    <meta property="dc:creator" content="Laurian Gridinoc" />
+    <link rel="transformation" href="http://www.w3.org/2003/g/glean-profile" />
+    <style id="stylesheet" type="text/css" media="screen, projection"><!--/*--><![CDATA[/*><!--*/
+	@import url("lib/blueprint-0.7.1/blueprint/screen.css");
+	@import url("lib/blueprint-0.7.1/blueprint/plugins/fancy-type/screen.css");
+	
+	.container {
+		margin:	0;
+	}
+	
+	#head {
+		background-color:	black;
+		color:			white;
+		opacity:		0.8;
+		position: fixed;
+		top: 0px;
+		left: 0;
+		height: 54px;
+	}
+		
+	#header h2 {
+		color:	white;
+		background-color:	black;
+		margin-top: 7px;
+	}
+	
+	#head a {
+		color: white;
+		padding: 4.5px; 
+		margin-left: -4.5px;
+		text-decoration: none;
+	}
+	
+	#head a:hover {
+		color: white;
+		outline: 1px solid white; 
+	}
+		
+	a {
+		color: black;
+	}
+	
+	a:hover {
+		color: white;
+		background-color:	black;
+		text-decoration: none;
+		outline: 2px solid black;
+	}
+	
+	
+	div#gsfn_list_widget img { border: none; }
+    div#gsfn_list_widget { font-size: 12px; width: 400px; border: 6px solid #DDD; padding: 10px; }
+	div#gsfn_list_widget a.widget_title { color: #000; display: block; margin-bottom: 10px; font-weight: bold; }
+	div#gsfn_list_widget a.widget_title:hover { color: white; display: block; margin-bottom: 10px; font-weight: bold; }
+    div#gsfn_list_widget .powered_by { margin-top: 8px; padding-top: 8px; border-top: 1px solid #DDD; }
+    div#gsfn_list_widget .powered_by a { color: #333; font-size: 90%; }
+    div#gsfn_list_widget .powered_by a:hover { color: white; font-size: 90%; }
+    div#gsfn_list_widget div#gsfn_content { }
+    div#gsfn_list_widget div#gsfn_content li { text-align:left; margin-bottom:6px; }
+    div#gsfn_list_widget div#gsfn_content a.gsfn_link { line-height: 1; }
+    div#gsfn_list_widget div#gsfn_content span.time { font-size: 90%; padding-left: 3px; }
+    div#gsfn_list_widget div#gsfn_content p.gsfn_summary { margin-top: 2px }
+	
+    /*]]>*/--></style>   
+    <link rel="stylesheet" href="lib/blueprint-0.7.1/blueprint/print.css" type="text/css" media="print" /> 
+    <!--[if IE]><link rel="stylesheet" href="ui/lib/blueprint-0.7.1/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
+    <script type="text/javascript"><!--//--><![CDATA[//><!--
+        void(null);
+    //--><!]]></script>
+  </head>
+  <body>
+	
+	<div id="head" class="container xshowgrid">
+		<div id="header" class="column prepend-1 span-4">
+			<h2 style="font-family: Optima">PowerMagpie</h2>
+		</div>
+		<div class="column prepend-1 span-1" style="margin-top: 18px;">
+			<a href="#intro">Intro</a>
+		</div>
+		<div class="column prepend-1 span-1" style="margin-top: 18px;">
+			<a href="http://powermagpie.tumblr.com/" target="_new">Blog</a>
+		</div>
+		<div class="column prepend-1 span-2" style="margin-top: 18px;">
+			<a href="#community">Community</a>
+		</div>
+		<div class="column prepend-1 span-1" style="margin-top: 18px;">
+			<a href="#dev">Dev</a>
+		</div>
+		<div class="column prepend-1 span-1" style="margin-top: 18px;">	
+			<a href="http://kmi.open.ac.uk/email.php?member=laurian-gridinoc" target="_new">Contact</a>
+		</div>		
+	</div>
+	
+	<div id="intro" class="container" style="padding-top: 234px;">
+		<div class="column prepend-6 span-16 last xshowgrid">
+			<h1 style="font-size: 6em !important; margin-bottom: 54px;">What is Semantic Browsing?</h1>
+		</div>
+		<div class="column prepend-6 span-11">
+		<p><a href="http://example.com" target="_new">Lorem ipsum dolor sit amet</a>, consectetuer adipiscing elit. Aliquam mi nunc, semper nec, pulvinar fringilla, varius sed, nisi. Vestibulum in ante eu nisl viverra iaculis. Integer non est. Aliquam erat volutpat. Nunc mi quam, rhoncus in, mollis sed, gravida ut, mi. Morbi auctor lectus. Donec sed felis quis nisi rutrum posuere. Nulla suscipit. Nam volutpat elit quis massa. Phasellus placerat.</p>
+		
+
+		
+	</div>
+	
+	<div class="column prepend-1 span-5 append-1 last">
+	<h6>Other versions</h6>
+	<p>The description of early versions of PowerMagpie, as well as the <a href="http://openk.org/" target="_new">OpenKnowledge</a> branch are available <a href="http://powermagpie.open.ac.uk/" target="_new">here</a>.</p>
+	
+	<h6>The ‘Original’ Magpie</h6>
+
+	<p><a href="http://kmi.open.ac.uk/projects/magpie/main.html" target="_new">Magpie</a> is a framework and a suite of tools supporting a low-cost approach to annotating documents for the Semantic Web with an aim to support browsing.</p>
+
+	<p>The key feature of Magpie is the support for the annotation and subsequent interpretation of web documents with no predefined semantic mark-up.</p>
+	</div>
+	
+	
+	
+	<div id="community" class="column prepend-6 span-16 last xshowgrid">
+			<h1 style="font-size: 6em !important; margin-bottom: 54px;padding-top: 234px;">Community</h1>
+		</div>
+			<div class="column prepend-6 span-11">
+		
+		<div id="gsfn_list_widget">
+		  <a href="http://getsatisfaction.com/knowledgemediainstitute" class="widget_title">Active discussions about PowerMagpie</a>
+		  <div id="gsfn_content">Loading...</div>
+		  <div class="powered_by"><a href="http://getsatisfaction.com/"><img alt="Favicon" src="http://www.getsatisfaction.com/favicon.gif" style="vertical-align: middle;" /></a> <a href="http://getsatisfaction.com/">Get Satisfaction support network</a></div>
+		</div>
+		<script src="http://getsatisfaction.com/knowledgemediainstitute/widgets/javascripts/8a15d31/widgets.js" type="text/javascript"></script><script src="http://getsatisfaction.com/knowledgemediainstitute/topics.widget?callback=gsfnTopicsCallback&amp;length=80&amp;limit=5&amp;product=knowledgemediainstitute_powermagpie&amp;sort=recently_active" type="text/javascript"></script>
+
+
+	
+	</div>
+		
+		
+	
+		<div id="dev" class="column prepend-6 span-16 last xshowgrid">
+			<h1 style="font-size: 6em !important; margin-bottom: 54px;padding-top: 234px;">Development</h1>
+		</div>
+			<div class="column prepend-6 span-11">
+			
+		<p>A Mercurial repository is available at <a href="http://mercurial.intuxication.org/hg/powermagpie" target="_new">http://mercurial.intuxication.org/hg/powermagpie</a>, bug tracking at <a href="http://powermagpie.lighthouseapp.com/" target="_new">http://powermagpie.lighthouseapp.com/</a></p>	
+		
+
+
+		<script type="text/javascript" src="http://powermagpie.tumblr.com/api/read/json"></script>
+		<script type="text/javascript">
+		// The variable "tumblr_api_read" is now set.
+		//tumblr_api_read[1][0]['@url'];
+		</script>
+	
+	</div>
+		
+		
+	
+		
+		
+  
+		<hr class="space"/>
+ 
+  
+		<div class="column prepend-2 span-3 clear">
+		<p><a rel="license" href="http://creativecommons.org/licenses/by-sa/2.0/uk/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/2.0/uk/80x15.png"/></a>
+		</p>
+		</div>
+		<div class="column prepend-1 span-12 last">
+		<p class="incr">
+		This <span xmlns:dc="http://purl.org/dc/elements/1.1/" href="http://purl.org/dc/dcmitype/Text" rel="dc:type">work</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://purl.org/net/laur" property="cc:attributionName" rel="cc:attributionURL">Laurian Gridinoc</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/2.0/uk/">Creative Commons Attribution-Share Alike 2.0 UK: England &amp; Wales License</a>. The PowerMagpie software is licenced under the <a href="http://creativecommons.org/licenses/GPL/2.0/">CC-GNU GPL</a>.
+		Permissions beyond the scope of these licenses may be available at <a xmlns:cc="http://creativecommons.org/ns#" href="http://kmi.open.ac.uk/" rel="cc:morePermissions">http://kmi.open.ac.uk/</a>.
+		
+		
+		
+		</p>
+		</div>
+		
+		
+	</div>
+  </body>
+</html>

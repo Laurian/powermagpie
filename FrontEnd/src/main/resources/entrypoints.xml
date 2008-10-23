@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><entrypoints>
+  <entrypoint>
+    <name>icon</name>
+    <uri>ffcpl:/PowerMagpie/icon.png</uri>
+    <indexable>
+      <title>Module Icon</title>
+      <desc>
+      </desc>
+      <keywords/>
+    </indexable>
+    <categories>img hidden</categories>
+    <group>entrypoints</group>
+    <icon/>
+  </entrypoint>
+  <entrypoint>
+    <name>index_urn:uk:ac:open:powermagpie</name>
+    <uri>ffcpl:/PowerMagpie/index.idoc</uri>
+    <indexable>
+      <title>Sample DPML</title>
+      <desc>Executes the sample DPML script</desc>
+      <keywords/>
+    </indexable>
+    <categories>app</categories>
+    <group>entrypoints</group>
+    <icon/>
+  </entrypoint>
+  <entrypoint>
+    <name>script_urn:uk:ac:open:powermagpie</name>
+    <uri>ffcpl:/PowerMagpie/index.bs</uri>
+    <indexable>
+      <title>Sample Beanshell</title>
+      <desc>Executes the sample beanshell script</desc>
+      <keywords/>
+    </indexable>
+    <categories>app</categories>
+    <group>entrypoints</group>
+    <icon/>
+  </entrypoint>
+</entrypoints>

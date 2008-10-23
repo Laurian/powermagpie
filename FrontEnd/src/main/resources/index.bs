@@ -1,0 +1,16 @@
+import org.ten60.netkernel.layer1.nkf.*;
+import com.ten60.netkernel.urii.IURRepresentation;
+import org.ten60.netkernel.layer1.representation.StringAspect;
+
+void main()
+{
+    String s="<list>";
+    for (int i=0; i<10; i++)
+    {   s+="<number>"+i+"</number>";
+    }
+    s+="</list>";
+
+    INKFResponse response = context.createResponseFrom(new StringAspect(s));
+    response.setMimeType("text/xml");
+    context.setResponse(response);
+}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><idoc>
+	<seq>
+		<instr>
+			<type>copy</type>
+			<operand>
+<html>
+	<head>
+		<title>PowerMagpie Index Page</title>
+	</head>
+	<body>
+		<h1>PowerMagpie Index Page</h1>
+		<p>Your module has been successfully generated and deployed.</p>
+	</body>
+</html>
+			</operand>
+			<target>var:template</target>
+		</instr>
+		<instr>
+			<type>copy</type>
+			<operand>var:template</operand>
+			<target>this:response</target>
+		</instr>
+		<instr>
+			<type>cast</type>
+			<operator><cast><mimetype>text/html</mimetype></cast></operator>
+			<operand>this:response</operand>
+			<target>this:response</target>
+		</instr>
+		<exception>
+			<instr>
+				<type>throw</type>
+				<operand>
+					<ex>
+						<id>Accessor not Compiled</id>
+						<message>Please compile your newly created accessor before proceeding.</message>
+					</ex>
+				</operand>
+			</instr>
+			
+		</exception>
+	</seq>
+</idoc>
