@@ -25,6 +25,7 @@
 	
 	var object		 = {
 		
+        //  Y = λf·(λx·f (x x)) (λx·f (x x))
 		Y: 			function(le) {
 		    			return function(f) {
 		        			return f(f);
