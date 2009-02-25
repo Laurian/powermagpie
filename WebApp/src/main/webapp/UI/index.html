@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="#stylesheet" type="text/css"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
+<html	version="XHTML+RDFa 1.0"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:foaf="http://xmlns.com/foaf/0.1/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xml:lang="en-GB">
+  <head	version="XHTML+RDFa 1.0"
+        profile="http://www.w3.org/1999/xhtml/vocab">
+    <base href="http://localhost:8080/PowerMagpie/" />
+    <title>PowerMagpie</title>
+    <meta property="dc:creator" content="Laurian Gridinoc" />
+    <link rel="transformation" href="http://www.w3.org/2003/g/glean-profile" />
+    
+    <link rel="stylesheet" type="text/css" href="Frameworks/ExtJS/2.2.1/resources/css/ext-all.css" />
+ 	<script type="text/javascript" src="Frameworks/ExtJS/2.2.1/adapter/ext/ext-base.js"></script>
+    <script type="text/javascript" src="Frameworks/ExtJS/2.2.1/ext-all.js"></script>
+
+    <script type='text/javascript' src='dwr/interface/PowerMagpie.js'></script>
+    <script type='text/javascript' src='dwr/engine.js'></script>
+
+    <style id="stylesheet" type="text/css" media="screen, projection"><!--/*--><![CDATA[/*><!--*/
+    /*]]>*/--></style>
+    <script type="text/javascript"><!--//--><![CDATA[//><!--
+
+var nttRoot = null;
+
+Ext.onReady(function(){
+
+    var detailsText = '<i>Select an entity to see more information...</i>';
+
+	var tpl = new Ext.Template(
+        '<h2 class="title">{title}</h2>',
+        '<p><b>Foo</b>: {published}</p>',
+        '<p><b>Bar</b>: {innerText}</p>',
+        '<p><a href="{url}" target="_blank">Explore in Watson?</a></p>'
+	);
+    tpl.compile();
+
+
+    var panel = new Ext.Panel({
+        title: 'Entities',
+	    renderTo: 'tree',
+        layout: 'border',
+	    width: 450,
+        height: 450,
+        items: [{
+            xtype: 'treepanel',
+            id: 'ntt-tree',
+            region: 'center',
+            margins: '2 2 0 2',
+            autoScroll: true,
+            animate:true,
+            containerScroll: true,
+	        rootVisible: false,
+	        root: new Ext.tree.AsyncTreeNode({
+                                    id: 'ntt-root',
+                                    text: 'Entities',
+                                    allowDrag:false,
+                                    allowDrop:false
+                                }),
+
+            // auto create TreeLoader
+            //dataUrl: 'tree.json',
+
+	        listeners: {
+	            'render': function(tp){
+                    tp.getSelectionModel().on('selectionchange', function(tree, node){
+                        var el = Ext.getCmp('details-panel').body;
+	                    if(node.leaf){
+	                        tpl.overwrite(el, node.attributes);
+	                    }else{
+                            el.update(detailsText);
+                        }
+                    })
+	            }
+	        }
+        },{
+            region: 'south',
+            title: 'Entity Details',
+            id: 'details-panel',
+            autoScroll: true,
+            collapsible: true,
+            split: true,
+            margins: '0 2 2 2',
+            cmargins: '2 2 2 2',
+            height: 220,
+            html: detailsText
+        }]
+    });
+
+    // setup
+    nttRoot = panel.findById("ntt-tree").getRootNode();
+
+    nttRoot.getOwnerTree().on('click', function(n){
+        //alert(parent.location.href);
+        if(n.attributes.onclick){
+            eval(n.attributes.onclick);
+        }
+    });
+
+    // load
+    PowerMagpie.getEntities({
+        callback:   function(data){
+                        populateEntities(data);
+                    }
+        });
+
+});
+
+//////////// callbacks ///////////
+
+function populateEntities(data) {
+    for (i in data) {
+        if ((data[i] + "").indexOf("function (") != -1) continue;
+        if (nttRoot.findChild("id", "ntt:" + data[i]) != null) continue;
+        nttRoot.appendChild(
+                new Ext.tree.TreeNode({
+                    text:   data[i],
+                    id:     "ntt:" + data[i],
+                    cls:    'entity',
+                    icon:   "Icons/T.png",
+                    allowDrag:  false,
+                    populated:  false,
+                    onclick:    "callExpandTerm('"+data[i]+"')"
+                    })
+            );
+        nttRoot.expand();
+    }
+}
+
+
+function callExpandTerm(name) {
+    var node = nttRoot.getOwnerTree().getNodeById("ntt:" + name);
+    if (node.populated) return;
+    PowerMagpie.expandTerm(name, {
+        callback:   function(data){
+                        expandTerm(node, data);
+                    }
+    });
+}
+
+function expandTerm(node, data) {
+
+    for (i in data) {
+        if ((data[i] + "").indexOf("function (") != -1) continue;
+        icon = "Icons/" + "R.png";
+        if (data[i].type == 'Individual') icon = "Icons/" + "I.png";
+        if (data[i].type == 'Class') icon = "Icons/" + "C.png";
+        if (data[i].type == 'Property') icon = "Icons/" + "P.png";
+        node.appendChild(
+                new Ext.tree.TreeNode({
+                    text: data[i].localName,
+                    id: node.id + ":ntt:" + data[i].URI,
+                    cls:'entity',
+                    icon: icon,
+                    allowDrag:false,
+                    populated: false,
+                    //checked: false,
+                    oncheck: "checkOne('"+node.id+"', '"+data[i].URI+"')",
+                    onclick: "callExpandEntity('"+node.id+":ntt:"+data[i].URI+"', '"+data[i].URI+"', '"+data[i].type+"')"
+                    })
+            );
+
+        node.expand();
+        node.populated = true;
+
+    }
+
+    node.appendChild(
+                new Ext.tree.TreeNode({
+                    text: "<i>occurences</i>",
+                    id: node.id + "@occ:",
+                    cls:'entity',
+                    icon: "Icons/M.png",
+                    allowDrag:false,
+                    populated: false
+                })
+       );
+
+    //notify parent
+    //PowerMagpie.send(session + '#pm', node.id);
+}
+
+    //--><!]]></script>
+  </head>
+  <body>
+
+    <div id="tree"></div>
+
+  </body>
+</html>

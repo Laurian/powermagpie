@@ -40,11 +40,13 @@
         </plugins>
     </build>
     <dependencies>
+        <!-- TODO
         <dependency>
             <groupId>uk.ac.open.powermagpie</groupId>
             <artifactId>FrontEnd</artifactId>
             <version>2.0</version>
         </dependency>
+        -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -52,9 +54,26 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>com.tek271</groupId>
+            <artifactId>memoize</artifactId>
+            <version>1.01</version>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>2.2_beta1</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>com.hp.hpl.jena</groupId>
             <artifactId>jena</artifactId>
-            <version>2.5.6</version>
+            <version>2.5.7</version>
+        </dependency>
+        <dependency>
+            <!-- http://developer.yahoo.com/download/download.html -->
+            <groupId>com.yahoo</groupId>
+            <artifactId>yws</artifactId>
+            <version>2.12</version>
         </dependency>
         <dependency>
             <groupId>commons-httpclient</groupId>
@@ -62,16 +81,47 @@
             <version>3.1</version>
         </dependency>
         <dependency>
+            <groupId>org.directwebremoting</groupId>
+            <artifactId>dwr</artifactId>
+            <version>3.0.M1</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>axis</groupId>
+            <artifactId>axis</artifactId>
+            <version>1.4</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>uk.ac.open.kmi</groupId>
+            <artifactId>watson-client</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>jsp-api</artifactId>
             <version>2.1</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
     <repositories>
@@ -83,6 +133,14 @@
             <!-- see http://www.netbeans.org/issues/show_bug.cgi?id=143307 -->
             <id>nb-mavenplugins.sourceforge.net</id>
             <url>http://nb-mavenplugins.sourceforge.net/releases/</url>
+        </repository>
+        <repository>
+            <id>central</id>
+            <name>Maven Repository Switchboard</name>
+            <layout>default</layout>
+            <url>http://www.ibiblio.org/maven2</url>
+            <snapshots>
+            </snapshots>
         </repository>
     </repositories>
     <properties>

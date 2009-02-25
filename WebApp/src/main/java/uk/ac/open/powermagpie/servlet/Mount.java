@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uk.ac.open.powermagpie.servlet;
 
 import java.io.DataInputStream;
@@ -19,21 +15,29 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class Mount extends HttpServlet {
 
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private String defaultResource;
+    private ClassLoader classLoader;
+
+    @Override
+    public void init() throws ServletException {
+        defaultResource = this.getInitParameter("default.resource");
+        classLoader = this.getClass().getClassLoader();
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         ServletOutputStream out = response.getOutputStream();
         try {
 
             String resource = request.getPathInfo().substring(1);
-            URL url = this.getClass().getClassLoader().getResource(resource);
+
+            if (resource.length() == 0) {
+                resource = defaultResource;
+            }
+
+            URL url = classLoader.getResource(resource);
 
             if (url == null) {
                 response.sendError(response.SC_NOT_FOUND);
@@ -46,7 +50,7 @@ public class Mount extends HttpServlet {
                 response.setHeader("URI", url.toString());
                 response.setContentType(mime);
 
-                DataInputStream in = new DataInputStream(this.getClass().getClassLoader().getResourceAsStream(resource));
+                DataInputStream in = new DataInputStream(classLoader.getResourceAsStream(resource));
 
                 byte[] buffer = new byte[1024];
                 int length = 0;
@@ -61,12 +65,8 @@ public class Mount extends HttpServlet {
         }
     }
 
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+        return "Mounts classloader accessible resources";
+    }
 }
