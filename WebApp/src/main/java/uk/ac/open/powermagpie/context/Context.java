@@ -1,8 +1,6 @@
 package uk.ac.open.powermagpie.context;
 
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
 import java.io.OutputStream;
 import java.util.HashMap;
 import uk.ac.open.powermagpie.search.Factory;
@@ -16,14 +14,12 @@ public class Context {
     private String uri;
     private StringBuffer text;
 
-    private Model model;
-
+    
     private HashMap<String, Term> terms;
 
     public Context() {
         text = new StringBuffer();
         terms = new HashMap<String, Term>();
-        model = ModelFactory.createDefaultModel();
     }
 
     public Context(String uri) {
@@ -43,7 +39,7 @@ public class Context {
     }
 
     public void rdf(OutputStream out) {
-        model.write(out, "RDF/XML");
+        //jena?
     }
 
     public HashMap<String, Term> terms() {

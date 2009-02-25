@@ -64,11 +64,11 @@
             <version>2.2_beta1</version>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
+        <!-- dependency>
             <groupId>com.hp.hpl.jena</groupId>
             <artifactId>jena</artifactId>
             <version>2.5.7</version>
-        </dependency>
+        </dependency -->
         <dependency>
             <!-- http://developer.yahoo.com/download/download.html -->
             <groupId>com.yahoo</groupId>

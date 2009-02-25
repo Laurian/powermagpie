@@ -42,32 +42,6 @@
     </servlet>
 
 
-
-
-    <servlet>
-        <servlet-name>Store</servlet-name>
-        <servlet-class>uk.ac.open.powermagpie.servlet.Store</servlet-class>
-        <init-param>
-            <param-name>redirect.prefix</param-name>
-            <param-value>http://api.talis.com/stores/lgridinoc-dev1/meta?about=http://purl.org/net/powermagpie/store</param-value>
-        </init-param>
-        <init-param>
-            <param-name>redirect.escape</param-name>
-            <param-value>true</param-value>
-        </init-param>
-        <init-param>
-            <param-name>talis.store</param-name>
-            <param-value>http://api.talis.com/stores/lgridinoc-dev1</param-value>
-        </init-param>
-        <init-param>
-            <param-name>talis.username</param-name>
-            <param-value>lgridinoc</param-value>
-        </init-param>
-        <init-param>
-            <param-name>talis.password</param-name>
-            <param-value/>
-        </init-param>
-    </servlet>
     <servlet>
         <servlet-name>Mount</servlet-name>
         <servlet-class>uk.ac.open.powermagpie.servlet.Mount</servlet-class>
@@ -82,7 +56,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Mount</servlet-name>
-        <url-pattern>/m/*</url-pattern>
+        <url-pattern>/mnt/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>dwr-invoker</servlet-name>
