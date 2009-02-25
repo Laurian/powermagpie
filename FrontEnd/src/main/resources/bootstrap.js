@@ -14,23 +14,18 @@
  	:license <http://www.apache.org/licenses/LICENSE-2.0> .
 */
 
-(function(){
+(function() {
 	
 	var namespace 	= 'http://purl.org/net/powermagpie';
-	var base 		= namespace;
 	
-	if (! window[namespace]) 		window[namespace] = {};
-	if (window[namespace].toggle) 	return window[namespace].toggle();	
-	if (window[namespace].initBase) base = window[namespace].initBase;
-	
-	var object		 = {
+	var object		= {
 		
         //  Y = λf·(λx·f (x x)) (λx·f (x x))
 		Y: 			function(le) {
 		    			return function(f) {
 		        			return f(f);
-		    			}( function(f) {
-		        			return le( function(x) {
+		    			} (function(f) {
+		        			return le(function(x) {
 		            			return f(f)(x);
 		        			});
 		    			});
@@ -38,21 +33,17 @@
 		
 		bootstrap:  function() {
 						with (window[namespace]) {
-								loadStyle(base + '/boot/style.css');
+								loadStyle (base + '/boot/style.css');
 								loadScript(base + '/boot/core.js', function(){
-									loadScript(profile, function(){
+									loadScript(base + profile, function(){
 										window[namespace].init();
 									});
 								});
 						}
 					},
 					
-		init: 		function(){
-						alert('init() bootstrap');
-					},
-
-		toggle:		function(){
-						alert('toggle() bootstrap');
+		init: 		function() {
+						alert('error: called init() in bootstrap');
 					},
 
 		loadScript: function(uri, callback) {
@@ -60,45 +51,47 @@
 						script.type = 'text/javascript';
 						script.src 	= uri;
 						if (callback !== null) { script.onload = callback; }
-						document.getElementsByTagName("head")[0].appendChild(script);
+						document.getElementsByTagName('head')[0].appendChild(script);
 					},
 		
-		loadStyle:  function(uri, callback){
+		loadStyle:  function(uri, callback) {
 						var style 	= document.createElement('link');
 						style.type 	= 'text/css';
 						style.rel 	= 'stylesheet';
 						style.href 	= uri;
 						style.media = 'screen';
 						if (callback !== null) { style.onload = callback; }
-						document.getElementsByTagName("head")[0].appendChild(style);
+						document.getElementsByTagName('head')[0].appendChild(style);
 					},
 							 
-		bookmarklet: function(){
-						return "(function(){"
-						+ "var s=document.createElementNS('http://www.w3.org/1999/xhtml','script');"
-						+ "s.charset='UTF-8';"
-						+ "s.type='text/javascript';"
-						+ "s.src='" + window[namespace].base + "/bootstrap.js';"
-						+ "window['" + namespace + "']={initBase: '" + window[namespace].base + "'};" //TODO kills toggle!
-						+ "document.getElementsByTagName('head')[0].appendChild(s);"
-						+ "}());";
+		bookmarklet: function() {
+						with (window[namespace]) {
+							return "(function(){"
+							+ "var s=document.createElementNS('http://www.w3.org/1999/xhtml','script');"
+							+ "s.charset='UTF-8';"
+							+ "s.type='text/javascript';"
+							+ "s.src='" + base + "/bootstrap.js';"
+							+ "window['" + namespace + "']={base: '" + base + "'};"
+							+ "document.getElementsByTagName('head')[0].appendChild(s);"
+							+ "}());";
+						}
 					},
 						
-		profile: 	base + '/Profiles/default.js', 
+		profile: 	'/Profiles/default.js', 
 		
-		base: 		base, 
+		base: 		namespace, 
 		
-		version: 	'0.1.4'
+		version: 	'0.1.5'
 	};
 	
-	if (window[namespace].$) {
+	if (!window[namespace]) { window[namespace] = {} };
+	if ( window[namespace].$) {
 		window[namespace].$.extend(window[namespace], object);
-	} else 
+		window[namespace].toggle();
+	} else {
+		object.base = window[namespace].base;
 		window[namespace] = object;
-	
-	if (window[namespace].preboot) {
-		window[namespace].preboot();
-	} else 
 		window[namespace].bootstrap();
+	}
 
 }());

@@ -81,6 +81,7 @@
     </build>
     <modules>
         <module>FrontEnd</module>
+        <module>BackEnd</module>
         <module>WebApp</module>
-    </modules>
+  </modules>
 </project>

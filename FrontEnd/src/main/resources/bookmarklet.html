@@ -16,31 +16,30 @@
 		
 		window[namespace] = {
 		
-			$:  		jQuery,//jQuery.noConflict(),
+			$:  		jQuery,
 		
-			preboot:	function() {
-				with(window[namespace]) {
-					$('#bookmarklet').html('PowerMagpie');
-					apply();
-				}
-			}
+			toggle:		function() {
+							$('#bookmarklet').html('PowerMagpie');
+							apply();
+						}
 		};
 		
 		function apply() {
+			
 			if ($('#purl')[0].checked) {
-				console.log('purl');
 				window[namespace].base = 'http://purl.org/net/powermagpie';
-				$('#bookmarklet')[0].href = 'javascript:' + window[namespace].bookmarklet();
 			} else {
-				console.log('usr');
 				window[namespace].base = $('#base')[0].value;
-				$('#bookmarklet')[0].href = 'javascript:' + window[namespace].bookmarklet();
 			}
+			
+			$('#bookmarklet')[0].href = 'javascript:' + window[namespace].bookmarklet();
+			
 			$("#bookmarklet")
-				.animate({ backgroundColor: "yellow" }, 250)
-				.animate({ backgroundColor: "white" }, 1000);
+				.animate({ backgroundColor: "yellow" },  250)
+				.animate({ backgroundColor: "white"  }, 1000);
 			
 		}
+		
 	</script>	
 </head>
 
