@@ -51,10 +51,6 @@
         </init-param>
     </servlet>
     <servlet-mapping>
-        <servlet-name>Store</servlet-name>
-        <url-pattern>/store</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>Mount</servlet-name>
         <url-pattern>/mnt/*</url-pattern>
     </servlet-mapping>
