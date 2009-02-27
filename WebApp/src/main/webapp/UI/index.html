@@ -290,6 +290,18 @@ function callExpandOnt(uri) {
     // TODO
     //callInfoOntology(uri);
     var node = ontRoot.getOwnerTree().getNodeById("ont:" + uri);
+
+    var sNode = new Ext.tree.TreeNode({
+                    text:"All concepts",
+                    id: node.id + ":s:",
+                    cls:'entity',
+                    //icon: "Icons/R.png",
+                    allowDrag:false,
+                    populated: false,
+                    onclick: "callExpandOntTop('"+uri+"')"
+                    });
+    node.appendChild(sNode);
+
     if (node.populated) return;
     PowerMagpie.expandOnt(uri, {
         callback:   function(data){
@@ -298,6 +310,46 @@ function callExpandOnt(uri) {
     });
 }
 
+function callExpandOntTop(uri) {
+    var node = ontRoot.getOwnerTree().getNodeById("ont:" + uri + ":s:");
+    PowerMagpie.expandOntTop(uri, {
+        callback:   function(data){
+                        expandOntConcepts(node, data);
+                    }
+    });
+}
+
+function callExpandOntClass(id, ont, uri) {
+    var node = ontRoot.getOwnerTree().getNodeById(id);
+    PowerMagpie.expandOntClass(ont, uri, {
+        callback:   function(data){
+                        expandOntConcepts(node, data);
+                    }
+    });
+}
+
+function expandOntConcepts(node, data) {
+    for (i in data) {
+        if ((data[i] + "").indexOf("function (") != -1) continue;
+        icon = "Icons/" + "R.png";
+        if (data[i].type == 'Individual') icon = "Icons/" + "I.png";
+        if (data[i].type == 'Class') icon = "Icons/" + "C.png";
+        if (data[i].type == 'Property') icon = "Icons/" + "P.png";
+        node.appendChild(
+                new Ext.tree.TreeNode({
+                    text:data[i].localName,
+                    id: node.id + ":xo:" + data[i].URI,
+                    cls:'entity',
+                    icon: icon,
+                    allowDrag:false,
+                    populated: false,
+                    onclick: "callExpandOntClass('"+node.id+":xo:"+data[i].URI+"', '"+data[i].ont+"', '"+data[i].URI+"')"
+                    })
+            );
+        node.expand();
+        node.populated = true;
+    }
+}
 function expandOnt(node, data) {
     for (i in data) {
         if ((data[i] + "").indexOf("function (") != -1) continue;
