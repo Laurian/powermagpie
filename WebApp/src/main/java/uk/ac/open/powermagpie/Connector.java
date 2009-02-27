@@ -8,6 +8,7 @@ import java.util.Vector;
 import uk.ac.open.kmi.watson.clientapi.EntityResult;
 import uk.ac.open.kmi.watson.clientapi.SemanticContentResult;
 import uk.ac.open.powermagpie.context.*;
+import uk.ac.open.powermagpie.search.Factory;
 import uk.ac.open.powermagpie.util.NameSpace;
 
 /**
@@ -192,4 +193,73 @@ public class Connector {
 
         return v.toArray(new String[]{});
     }
+
+
+    /// ontology tree, TODO move to its own class, etc.
+    /// get all concepts, keep only top ones.
+    public HashMap _expandOntTop(String uri) {
+        HashMap<String, HashMap<String, String>> h = new HashMap<String, HashMap<String, String>>();
+
+        String[] classes = Factory.instance().getWatson().getClasses(uri);
+        for(int i = 0; i < classes.length; i++) {
+            String[] superClasses = Factory.instance().getWatson().getSuperClasses(uri, classes[i]);
+            if (superClasses.length == 0) {
+                HashMap<String, String> attr = new HashMap<String, String>();
+                attr.put("type", "Class");
+                attr.put("localName", NameSpace.splitNamespace(classes[i])[1]);
+                attr.put("URI", classes[i]);
+                attr.put("ont", uri);
+                h.put(classes[i], attr);
+            }
+        }
+
+        return h;
+    }
+
+    public HashMap expandOntTop(String uri) {
+        HashMap<String, HashMap<String, String>> h = new HashMap<String, HashMap<String, String>>();
+
+        String[] classes = Factory.instance().getWatson().getClasses(uri);
+        Vector<String> c = new Vector<String>(classes.length);
+        for(int i = 0; i < classes.length; i++) {
+            c.add(classes[i]);
+        }
+
+        for(int i = 0; i < classes.length; i++) {
+            String[] subClasses = Factory.instance().getWatson().getSubClasses(uri, classes[i]);
+            System.out.println(classes[i] + " subclasses: " + subClasses.length);
+            for(int j = 0; j < subClasses.length; j++) {
+                //c.remove(subClasses[j]);
+            }
+        }
+
+        for (int i = 0; i < c.size(); i++) {
+                HashMap<String, String> attr = new HashMap<String, String>();
+                attr.put("type", "Class");
+                attr.put("localName", NameSpace.splitNamespace(c.elementAt(i))[1]);
+                attr.put("URI", c.elementAt(i));
+                attr.put("ont", uri);
+                h.put(c.elementAt(i), attr);
+        }
+
+        return h;
+    }
+
+    public HashMap expandOntClass(String ont, String uri) {
+        System.out.println("Expand " + ont + " >>> " + uri);
+        HashMap<String, HashMap<String, String>> h = new HashMap<String, HashMap<String, String>>();
+
+            String[] classes = Factory.instance().getWatson().getSubClasses(ont, uri);
+            for (int i = 0; i < classes.length; i++) {
+                HashMap<String, String> attr = new HashMap<String, String>();
+                attr.put("type", "Class");
+                attr.put("localName", NameSpace.splitNamespace(classes[i])[1]);
+                attr.put("URI", classes[i]);
+                attr.put("ont", ont);
+                h.put(classes[i], attr);
+            }
+
+        return h;
+    }
+
 }
