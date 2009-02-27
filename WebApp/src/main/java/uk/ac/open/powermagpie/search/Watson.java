@@ -64,6 +64,26 @@ public class Watson {
     }
 
     @Remember(maxSize = 16384, timeToLive = 672, timeUnit = TimeUnitEnum.HOUR)
+    public String[] getSuperClasses(String onto, String uri) {
+        try {
+            return entitySearch.getAllSuperClasses(onto, uri);
+        } catch (RemoteException ex) {
+            Logger.getLogger(Watson.class.getName()).log(Level.SEVERE, null, ex);
+            return new String[]{};
+        }
+    }
+
+    @Remember(maxSize = 16384, timeToLive = 672, timeUnit = TimeUnitEnum.HOUR)
+    public String[] getSubClasses(String onto, String uri) {
+        try {
+            return entitySearch.getAllSubClasses(onto, uri);
+        } catch (RemoteException ex) {
+            Logger.getLogger(Watson.class.getName()).log(Level.SEVERE, null, ex);
+            return new String[]{};
+        }
+    }
+
+    @Remember(maxSize = 16384, timeToLive = 672, timeUnit = TimeUnitEnum.HOUR)
     public String[] getClasses(String uri) {
         try {
             return ontologySearch.listClasses(uri);
