@@ -77,11 +77,11 @@
 						}
 					},
 						
-		profile: 	'/Profiles/default.js', 
+		profile: 	'/Profiles/Classic.js',
 		
 		base: 		namespace, 
-		
-		version: 	'0.1.5'
+
+		version: 	'0.2.1'
 	};
 	
 	if (!window[namespace]) { window[namespace] = {} };
