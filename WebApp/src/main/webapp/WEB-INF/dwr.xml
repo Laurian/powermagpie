@@ -6,7 +6,7 @@
 <dwr>
     
 <allow>
-  <create creator="new" javascript="PowerMagpie" scope="application">
+  <create creator="new" javascript="PowerMagpie" scope="session">
     <param name="class" value="uk.ac.open.powermagpie.Connector" />
   </create>  
 </allow>
