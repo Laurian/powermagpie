@@ -31,70 +31,6 @@ var ontRoot;
 
 Ext.onReady(function(){
 
-    /*
-
-     var detailsText = '<i>Select an entity to see more information...</i>';
-
-	var tpl = new Ext.Template(
-        '<h2 class="title">{title}</h2>',
-        '<p><b>Foo</b>: {published}</p>',
-        '<p><b>Bar</b>: {innerText}</p>',
-        '<p><a href="{url}" target="_blank">Explore in Watson?</a></p>'
-	);
-    tpl.compile();
-
-
-    var panel = new Ext.Panel({
-        title: 'Entities',
-	    renderTo: 'tree',
-        layout: 'border',
-	    width: 450,
-        height: 450,
-        items: [{
-            xtype: 'treepanel',
-            id: 'ntt-tree',
-            region: 'center',
-            margins: '2 2 0 2',
-            autoScroll: true,
-            animate:true,
-            containerScroll: true,
-	        rootVisible: false,
-	        root: new Ext.tree.AsyncTreeNode({
-                                    id: 'ntt-root',
-                                    text: 'Entities',
-                                    allowDrag:false,
-                                    allowDrop:false
-                                }),
-
-            // auto create TreeLoader
-            //dataUrl: 'tree.json',
-
-	        listeners: {
-	            'render': function(tp){
-                    tp.getSelectionModel().on('selectionchange', function(tree, node){
-                        var el = Ext.getCmp('details-panel').body;
-	                    if(node.leaf){
-	                        tpl.overwrite(el, node.attributes);
-	                    }else{
-                            el.update(detailsText);
-                        }
-                    })
-	            }
-	        }
-        },{
-            region: 'south',
-            title: 'Entity Details',
-            id: 'details-panel',
-            autoScroll: true,
-            collapsible: true,
-            split: true,
-            margins: '0 2 2 2',
-            cmargins: '2 2 2 2',
-            height: 220,
-            html: detailsText
-        }]
-    });*/
-
        Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
        viewport = new Ext.Viewport({
             layout:'border',
@@ -150,7 +86,7 @@ Ext.onReady(function(){
                                 })
                             })]
                     },{
-                        title: 'Semantically Related Resources',
+                        title: 'Predefined Ontologies',
                         autoScroll:true,
                         contentEl: 'visualisation'
                     }]
@@ -241,8 +177,8 @@ function expandTerm(node, data) {
                     icon: icon,
                     allowDrag:false,
                     populated: false,
-                    checked: false,
-                    oncheck: "checkOne('"+node.id+"', '"+data[i].URI+"')",
+                    //checked: false,
+                    //oncheck: "checkOne('"+node.id+"', '"+data[i].URI+"')",
                     onclick: "callExpandEntity('"+node.id+":ntt:"+data[i].URI+"', '"+data[i].URI+"', '"+data[i].type+"')"
                     })
             );
@@ -265,6 +201,68 @@ function expandTerm(node, data) {
 
     //notify parent
     //PowerMagpie.send(session + '#pm', node.id);
+}
+
+function callExpandEntity(id, uri, type) {
+    //TODO
+    //callInfoEntity(uri);
+    var node = nttRoot.getOwnerTree().getNodeById(id);
+    if (node.populated) return;
+
+    icon = "Icons/" + "R.png";
+    if (type == 'Individual') icon = "Icons/" + "I.png";
+    if (type == 'Class') icon = "Icons/" + "C.png";
+    if (type == 'Property') icon = "Icons/" + "P.png";
+
+    node.appendChild(
+                new Ext.tree.TreeNode({
+                    text:uri,
+                    id: node.id + "@uri",
+                    cls:'entity',
+                    icon: icon,
+                    allowDrag:false,
+                    populated: false
+                })
+            );
+
+    var ontNode = new Ext.tree.TreeNode({
+                    text:"ontologies",
+                    id: node.id + ":ont:",
+                    cls:'entity',
+                    icon: "Icons/R.png",
+                    allowDrag:false,
+                    populated: false//,
+                    //onclick: "callExpandEntity('"+node.id+":ont:"+data[i]+"', '"+data[i]+"')"
+                    });
+    node.appendChild(ontNode);
+
+    node.expand();
+    node.populated = true;
+
+    PowerMagpie.expandEntity(uri, {
+        callback:   function(data){
+                        expandEntity(ontNode, data);
+                    }
+    });
+}
+
+function expandEntity(node, data) {
+    for (i in data) {
+        if ((data[i] + "").indexOf("function (") != -1) continue;
+        node.appendChild(
+                new Ext.tree.TreeNode({
+                    text:data[i].URI,
+                    id: node.id + ":ont:" + data[i].URI,
+                    cls:'entity',
+                    icon: "Icons/R.png",
+                    allowDrag:false,
+                    populated: false//,
+                    //onclick: "callInfoOntology('"+data[i].URI+"');"
+                    })
+            );
+        node.expand();
+        node.populated = true;
+    }
 }
 
 /////////// ontologies
@@ -376,11 +374,14 @@ function expandOntEntity(node, data) {
         node.populated = true;
     }
 }
+
+
+
+
+
     //--><!]]></script>
   </head>
   <body>
-
-    <!-- div id="tree"></div -->
 
   <div id="center2">
       <!-- Ontologies -->
@@ -396,7 +397,7 @@ function expandOntEntity(node, data) {
   </div>
 
   <div id="visualisation">
-      <a href="javascript:callFlashHUD()">Load</a> flash interface.
+      TODO
   </div>
   
   </body>
