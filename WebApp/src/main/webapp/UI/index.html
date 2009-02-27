@@ -12,8 +12,9 @@
     <title>PowerMagpie</title>
     <meta property="dc:creator" content="Laurian Gridinoc" />
     <link rel="transformation" href="http://www.w3.org/2003/g/glean-profile" />
-    
+
     <link rel="stylesheet" type="text/css" href="Frameworks/ExtJS/2.2.1/resources/css/ext-all.css" />
+    <link rel="stylesheet" type="text/css" href="Frameworks/ExtJS/2.2.1/resources/css/xtheme-gray.css" />
  	<script type="text/javascript" src="Frameworks/ExtJS/2.2.1/adapter/ext/ext-base.js"></script>
     <script type="text/javascript" src="Frameworks/ExtJS/2.2.1/ext-all.js"></script>
 
@@ -24,11 +25,15 @@
     /*]]>*/--></style>
     <script type="text/javascript"><!--//--><![CDATA[//><!--
 
-var nttRoot = null;
+var viewport;
+var nttRoot;
+var ontRoot;
 
 Ext.onReady(function(){
 
-    var detailsText = '<i>Select an entity to see more information...</i>';
+    /*
+
+     var detailsText = '<i>Select an entity to see more information...</i>';
 
 	var tpl = new Ext.Template(
         '<h2 class="title">{title}</h2>',
@@ -88,13 +93,83 @@ Ext.onReady(function(){
             height: 220,
             html: detailsText
         }]
-    });
+    });*/
+
+       Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+       viewport = new Ext.Viewport({
+            layout:'border',
+            items:[
+                {
+                    region:'south',
+                    contentEl: 'south',
+                    split:true,
+                    height: 100,
+                    minSize: 100,
+                    maxSize: 200,
+                    collapsible: true,
+                    autoScroll:true,
+                    title:'Details',
+                    margins:'0 0 0 0'
+                }, {
+                    region:'center',
+                    deferredRender:false,
+                    layout:'accordion',
+                    layoutConfig:{
+                        animate:true
+                    },
+                    items:[{
+                        title: 'Entities',
+                        autoScroll:true,
+                        items:[
+                            new Ext.tree.TreePanel( {
+                                id: 'ntt-tree',
+                                animate:true,
+                                containerScroll: true,
+                                rootVisible: false,
+                                root: new Ext.tree.TreeNode({
+                                    id: 'ntt-root',
+                                    text: 'Entities',
+                                    allowDrag:false,
+                                    allowDrop:false
+                                })
+                            })]
+                    },{
+                        title: 'Ontologies',
+                        autoScroll:true,
+                        items:[
+                            new Ext.tree.TreePanel( {
+                                id: 'ont-tree',
+                                animate:true,
+                                containerScroll: true,
+                                rootVisible: false,
+                                root: new Ext.tree.TreeNode({
+                                    id: 'ont-root',
+                                    text: 'Ontologies',
+                                    allowDrag:false,
+                                    allowDrop:false
+                                })
+                            })]
+                    },{
+                        title: 'Semantically Related Resources',
+                        autoScroll:true,
+                        contentEl: 'visualisation'
+                    }]
+                }
+             ]
+        });
 
     // setup
-    nttRoot = panel.findById("ntt-tree").getRootNode();
+    nttRoot = viewport.findById("ntt-tree").getRootNode();
+    ontRoot = viewport.findById("ont-tree").getRootNode();
 
     nttRoot.getOwnerTree().on('click', function(n){
         //alert(parent.location.href);
+        if(n.attributes.onclick){
+            eval(n.attributes.onclick);
+        }
+    });
+
+    ontRoot.getOwnerTree().on('click', function(n){
         if(n.attributes.onclick){
             eval(n.attributes.onclick);
         }
@@ -105,11 +180,20 @@ Ext.onReady(function(){
         callback:   function(data){
                         populateEntities(data);
                     }
-        });
+    });
+
+    PowerMagpie.getOntologies({
+        callback:   function(data){
+                        populateOntologies(data);
+                    }
+    });
 
 });
 
 //////////// callbacks ///////////
+
+
+/////////// entities
 
 function populateEntities(data) {
     for (i in data) {
@@ -157,7 +241,7 @@ function expandTerm(node, data) {
                     icon: icon,
                     allowDrag:false,
                     populated: false,
-                    //checked: false,
+                    checked: false,
                     oncheck: "checkOne('"+node.id+"', '"+data[i].URI+"')",
                     onclick: "callExpandEntity('"+node.id+":ntt:"+data[i].URI+"', '"+data[i].URI+"', '"+data[i].type+"')"
                     })
@@ -183,11 +267,137 @@ function expandTerm(node, data) {
     //PowerMagpie.send(session + '#pm', node.id);
 }
 
+/////////// ontologies
+
+function populateOntologies(data) {
+    for (i in data) {
+        if ((data[i] + "").indexOf("function (") != -1) continue;
+        if (ontRoot.findChild("id", "ont:" + data[i]) != null) continue;
+        ontRoot.appendChild(
+                new Ext.tree.TreeNode({
+                    text:data[i],
+                    id: "ont:" + data[i],
+                    cls:'entity',
+                    icon: "Icons/R.png",
+                    allowDrag:false,
+                    populated: false,
+                    onclick: "callExpandOnt('"+data[i]+"')"
+                    })
+            );
+        ontRoot.expand();
+    }
+}
+
+function callExpandOnt(uri) {
+    // TODO
+    //callInfoOntology(uri);
+    var node = ontRoot.getOwnerTree().getNodeById("ont:" + uri);
+    if (node.populated) return;
+    PowerMagpie.expandOnt(uri, {
+        callback:   function(data){
+                        expandOnt(node, data);
+                    }
+    });
+}
+
+function expandOnt(node, data) {
+    for (i in data) {
+        if ((data[i] + "").indexOf("function (") != -1) continue;
+        icon = "Icons/" + "R.png";
+        if (data[i].type == 'Individual') icon = "Icons/" + "I.png";
+        if (data[i].type == 'Class') icon = "Icons/" + "C.png";
+        if (data[i].type == 'Property') icon = "Icons/" + "P.png";
+        node.appendChild(
+                new Ext.tree.TreeNode({
+                    text:data[i].localName,
+                    id: node.id + ":ntt:" + data[i].URI,
+                    cls:'entity',
+                    icon: icon,
+                    allowDrag:false,
+                    populated: false,
+                    onclick: "callExpandOntEntity('"+node.id+":ntt:"+data[i].URI+"', '"+data[i].URI+"', '"+data[i].type+"')"
+                    })
+            );
+        node.expand();
+        node.populated = true;
+    }
+}
+
+
+function callExpandOntEntity(id, uri, type) {
+
+    // TODO
+    //callInfoEntity(uri);
+
+    var node = ontRoot.getOwnerTree().getNodeById(id);
+    if (node.populated) return;
+
+    icon = "Icons/" + "R.png";
+    if (type == 'Individual') icon = "Icons/" + "I.png";
+    if (type == 'Class') icon = "Icons/" + "C.png";
+    if (type == 'Property') icon = "Icons/" + "P.png";
+
+    node.appendChild(
+                new Ext.tree.TreeNode({
+                    text:uri,
+                    id: node.id + "@uri",
+                    cls:'entity',
+                    icon: icon,
+                    allowDrag:false,
+                    populated: false,
+                    onclick: "callInfoEntity('"+uri+"');"
+                })
+            );
+
+    node.expand();
+    node.populated = true;
+
+    PowerMagpie.expandOntEntity(uri, {
+        callback:   function(data){
+                        expandOntEntity(node, data);
+                    }
+    });
+}
+
+function expandOntEntity(node, data) {
+    for (i in data) {
+        if ((data[i] + "").indexOf("function (") != -1) continue;
+        node.appendChild(
+                new Ext.tree.TreeNode({
+                    text:data[i],
+                    id: node.id + ":term:" + data[i],
+                    cls:'entity',
+                    icon: "Icons/T.png",
+                    allowDrag:false,
+                    populated: false
+                    })
+            );
+        node.expand();
+        node.populated = true;
+    }
+}
     //--><!]]></script>
   </head>
   <body>
 
-    <div id="tree"></div>
+    <!-- div id="tree"></div -->
 
+  <div id="center2">
+      <!-- Ontologies -->
+  </div>
+
+  <div id="center1">
+      <!-- Entities -->
+  </div>
+
+  <div id="south">
+    <!-- info -->
+    Please select some text on the page, then click again on the bookmarklet.
+  </div>
+
+  <div id="visualisation">
+      <a href="javascript:callFlashHUD()">Load</a> flash interface.
+  </div>
+  
   </body>
 </html>
