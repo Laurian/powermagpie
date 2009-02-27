@@ -22,6 +22,10 @@
                         }
 					},
 
+            toggle:		function() {
+							aler('magick will be here!');
+						},
+
 			getXPath: 	function(element){
 							var path = "";
 					     	for (; element && element.nodeType == 1; element = element.parentNode) {
