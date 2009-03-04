@@ -31,6 +31,9 @@ var ontRoot;
 
 Ext.onReady(function(){
 
+       dwr.engine.setRpcType(dwr.engine.XMLHttpRequest);
+       dwr.engine.setActiveReverseAjax(true);
+
        Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
        viewport = new Ext.Viewport({
             layout:'border',
@@ -152,6 +155,7 @@ function populateEntities(data) {
 
 
 function callExpandTerm(name) {
+    PowerMagpie.send("host", "hi:" + name);
     var node = nttRoot.getOwnerTree().getNodeById("ntt:" + name);
     if (node.populated) return;
     PowerMagpie.expandTerm(name, {
@@ -171,7 +175,7 @@ function expandTerm(node, data) {
         if (data[i].type == 'Property') icon = "Icons/" + "P.png";
         node.appendChild(
                 new Ext.tree.TreeNode({
-                    text: data[i].localName,
+                    text: data[i].localName + " <img onclick='tag(\""+node.id + ":ntt:" + data[i].URI+"\")' src='Icons/mini_icons2/tag.gif' />",
                     id: node.id + ":ntt:" + data[i].URI,
                     cls:'entity',
                     icon: icon,
@@ -428,8 +432,52 @@ function expandOntEntity(node, data) {
 }
 
 
+//////// messaging
+function message(to, msg) {
+    //TODO use "to"
+    if (msg.indexOf("term:", 0) != -1) {
+        PowerMagpie.getEntities({
+        callback:   function(data){
+                        populateEntities(data);
+                    }
+        });
+    }
+}
 
+function _match(to, searchTerm, match, count) {
+    //if (to != session + "#ui") return;
+    var node = nttRoot.getOwnerTree().getNodeById("ntt:" + searchTerm + "@occ:");
+    node.appendChild(
+                new Ext.tree.TreeNode({
+                    text: match,
+                    id: "nid:" + count,
+                    cls:'entity',
+                    icon: "Icons/M.png",
+                    allowDrag:false,
+                    populated: false,
+                    onclick: "callShowMatch('nid:"+count+"')"
+                })
+       );
 
+        node.expand();
+        node.populated = true;
+}
+
+function callShowMatch(nid) {
+    PowerMagpie.send('host', nid);
+}
+
+function _select(to, searchTerm) {
+    //if (to != session + "#ui") return;
+    var node = nttRoot.getOwnerTree().getNodeById("ntt:" + searchTerm);
+    node.select();
+    node.expand();
+    node.ensureVisible();
+}
+
+function tag(uri) {
+    PowerMagpie.send("host", "tag:" + uri);
+}
 
     //--><!]]></script>
   </head>

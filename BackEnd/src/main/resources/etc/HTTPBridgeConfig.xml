@@ -1,0 +1,15 @@
+
+<HTTPBridgeConfig>
+  <!--
+  The resource ffcpl:/etc/HTTPBridgeConfig.xml
+  is access by the HTTP Bridge to discover its
+  configuration information for this zone.
+  -->
+    <defaultExceptionURI />
+
+    <!-- Module's zone -->
+    <zone>
+        <!-- The match tells the HTTP Bridge which requests are in this zone -->
+        <match>.*/powermagpie/.*</match>
+    </zone>
+</HTTPBridgeConfig>

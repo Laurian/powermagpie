@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nvp>
+    <class>java.util.Hashtable</class>
+    <database>/Data/Database/Praevalence</database>
+    <timer>60000</timer>
+    <mirroring>none</mirroring>
+    <address></address>
+    <port></port>
+    <lenient>true</lenient>
+    <factory></factory>
+    <!-- add jxpath namespaces, xstream mappings, etc. -->
+</nvp>

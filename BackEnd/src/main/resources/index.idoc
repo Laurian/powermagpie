@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><idoc>
+	<seq>
+
+
+<!-- terms -->
+
+ 		<instr>
+			<type>copy</type>
+			<operand><foo /></operand>
+			<target>powermagpie:/+term@soup</target>
+		</instr>
+ 		<instr>
+			<type>copy</type>
+			<operand><foo /></operand>
+			<target>powermagpie:/+term@rabbit</target>
+		</instr>
+
+
+<!-- watson -->
+
+ 		<!-- instr>
+			<type>copy</type>
+			<operand>http://localhost:8080/OK/watson?keywords=soup</operand>
+			<target>powermagpie:/terms[@lexical='soup']/sc</target>
+		</instr -->
+
+        <instr>
+			<type>copy</type>
+			<operand>http://localhost:8080/OK/watson?keywords=soup</operand>
+			<target>var:watson</target>
+		</instr>
+
+<instr>
+  <type>xslt</type>
+  <operand>var:watson</operand>
+  <operator>watson.xsl</operator>
+  <target>var:watson2</target>
+</instr>
+
+<instr>
+			<type>cast</type>
+			<operator><cast><mimetype>text/xml</mimetype></cast></operator>
+			<operand>var:watson2</operand>
+			<target>var:watson3</target>
+		</instr>
+
+        <instr>
+			<type>copy</type>
+			<operand>var:watson3</operand>
+			<target>powermagpie:/+path@/terms[%40name='rabbit']</target>
+		</instr>
+
+		<instr>
+			<type>copy</type>
+			<operand>powermagpie:/terms</operand>
+			<target>this:response</target>
+		</instr>
+		<instr>
+			<type>cast</type>
+			<operator><cast><mimetype>text/plain</mimetype></cast></operator>
+			<operand>this:response</operand>
+			<target>this:response</target>
+		</instr>
+	</seq>
+</idoc>

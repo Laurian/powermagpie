@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <identity>
+        <uri>urn:uk:ac:open:powermagpie2</uri>
+        <version>1.0.0</version>
+    </identity>
+    <info>
+        <name>PowerMagpie</name>
+        <description>PowerMagpie backend</description>
+        <type>application</type>
+    </info>
+    <publisher>
+        <name>Laurian Gridinoc</name>
+        <uri>http://purl.org/net/laur</uri>
+    </publisher>
+    <licence>
+        <name>GNU General Public License 2.0</name>
+        <uri>http://creativecommons.org/licenses/GPL/2.0/</uri>
+    </licence>
+    <export>
+        <uri>
+            <match>powermagpie:.*</match>
+            <match>ffcpl:/powermagpie/.*</match>
+            <match>ffcpl:/entrypoints.xml</match>
+            <match>ffcpl:/etc/HTTPBridgeConfig.xml</match>
+        </uri>
+        <class />
+    </export>
+    <rewrite>
+        <rule>
+            <match>ffcpl:/powermagpie/(.*)</match>
+            <to>ffcpl:/$1</to>
+        </rule>
+        <rule>
+             <match>ffcpl:/test</match>
+             <to>active:javascript+operator@ffcpl:/test.js</to>
+        </rule>
+        <rule>
+            <match>(ffcpl:.*\.idoc.*)</match>
+            <to>active:dpml+operand@$1</to>
+        </rule>
+        <rule>
+            <match>(ffcpl:.*\.bs.*)</match>
+            <to>active:beanshell+operator@$1</to>
+        </rule>
+
+    </rewrite>
+    <mapping>
+        <ura>
+            <match>powermagpie:.*</match>
+            <class>uk.ac.open.powermagpie.context.accessor.ContextAccessor</class>
+        </ura>
+        <this>
+            <match>ffcpl:/.*</match>
+            <match>ffcpl:/entrypoints.xml</match>
+            <match>ffcpl:/etc/HTTPBridgeConfig.xml</match>
+        </this>
+        <import>
+            <uri>urn:org:ten60:netkernel:ext:layer1</uri>
+        </import>
+        <import>
+            <uri>urn:org:ten60:netkernel:ext:xml:core</uri>
+        </import>
+        <import>
+            <uri>urn:org:ten60:netkernel:ext:xml:ura</uri>
+        </import>
+        <import>
+            <uri>urn:org:ten60:netkernel:ext:sys</uri>
+        </import>
+        <import>
+            <uri>urn:org:ten60:netkernel:ext:script</uri>
+        </import>
+        <import>
+            <uri>urn:org:ten60:netkernel:ext:dpml</uri>
+        </import>
+        <super />
+    </mapping>
+    <transreptors>
+        <transreptor>uk.ac.open.powermagpie.context.transreptor.ContextFactory</transreptor>
+    </transreptors>
+</module>

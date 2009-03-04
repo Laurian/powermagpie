@@ -1,10 +1,15 @@
 package uk.ac.open.powermagpie;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Vector;
+import org.directwebremoting.ScriptBuffer;
+import org.directwebremoting.WebContext;
+import org.directwebremoting.WebContextFactory;
+import org.directwebremoting.proxy.dwr.Util;
 import uk.ac.open.kmi.watson.clientapi.EntityResult;
 import uk.ac.open.kmi.watson.clientapi.SemanticContentResult;
 import uk.ac.open.powermagpie.context.*;
@@ -23,12 +28,19 @@ public class Connector {
         context = new Context("tag:powermagpie.open.ac.uk,2009:test");
     }
 
+    public boolean ping(String session) {
+        return true;
+    }
+
     public void process(String text) {
         context.process(text);
+        send("*", "term:");
     }
 
     public int add(String term) {
-        return context.add(term).matches().size();
+        int i = context.add(term).matches().size();
+        if (i > 0) send("*", "term:" + term.trim());
+        return i;
     }
 
     public Vector<String> terms() {
@@ -260,6 +272,33 @@ public class Connector {
             }
 
         return h;
+    }
+
+    public static void send(String to, String message) {
+        ScriptBuffer script = new ScriptBuffer();
+        script.appendScript("message('" + to + "', '" + message + "');");
+        WebContext ctx = WebContextFactory.get();
+        Collection scriptSessions = ctx.getAllScriptSessions();//getScriptSessionsByPage(ctx.getCurrentPage());
+        Util all = new Util(scriptSessions);
+        all.addScript(script);
+    }
+
+    public void match(String to, String term, String match, String id) {
+        ScriptBuffer script = new ScriptBuffer();
+        script.appendScript("_match('" + to + "', '" + term + "', '" + match + "', '" + id + "');");
+        WebContext ctx = WebContextFactory.get();
+        Collection scriptSessions = ctx.getAllScriptSessions();//getScriptSessionsByPage(ctx.getCurrentPage());
+        Util all = new Util(scriptSessions);
+        all.addScript(script);
+    }
+
+    public void select(String to, String term) {
+        ScriptBuffer script = new ScriptBuffer();
+        script.appendScript("_select('" + to + "', '" + term + "');");
+        WebContext ctx = WebContextFactory.get();
+        Collection scriptSessions = ctx.getAllScriptSessions();//getScriptSessionsByPage(ctx.getCurrentPage());
+        Util all = new Util(scriptSessions);
+        all.addScript(script);
     }
 
 }

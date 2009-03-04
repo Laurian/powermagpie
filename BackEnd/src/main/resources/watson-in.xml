@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<uk.ac.open.kmi.watson.clientapi.SemanticContentResult-array>
+    <uk.ac.open.kmi.watson.clientapi.SemanticContentResult>
+        <DLExpressivness></DLExpressivness>
+        <NBClasses>0</NBClasses>
+        <NBIndividuals>0</NBIndividuals>
+        <NBProperties>0</NBProperties>
+        <URI>http://paint-hopes.livejournal.com/data/foaf</URI>
+        <entityResultList>
+            <uk.ac.open.kmi.watson.clientapi.EntityResult>
+                <URI>http://www.livejournal.com/interests.bml?int=alphabet+soup.</URI>
+                <literals>
+                    <string-array>
+                        <string>http://purl.org/dc/elements/1.1/title</string>
+                        <string>title</string>
+                        <string>alphabet soup.</string>
+                        <string>en</string>
+                    </string-array>
+                </literals>
+                <relationTo/>
+                <type>Individual</type>
+                <____hashCodeCalc>false</____hashCodeCalc>
+            </uk.ac.open.kmi.watson.clientapi.EntityResult>
+        </entityResultList>
+        <languages>
+            <string>RDF</string>
+        </languages>
+        <nbStatements>0</nbStatements>
+        <numberOfStatements>0</numberOfStatements>
+        <size>30367</size>
+        <____hashCodeCalc>false</____hashCodeCalc>
+    </uk.ac.open.kmi.watson.clientapi.SemanticContentResult>
+</uk.ac.open.kmi.watson.clientapi.SemanticContentResult-array>
