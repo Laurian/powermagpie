@@ -8,23 +8,34 @@
 			loadScript(base + '/Library/rdfa/rdfa.js');
 
             //DWR
-            /*
-            var dwr = {};
-            var PowerMagpie = {};
+            if (typeof this['PowerMagpie'] == 'undefined') this.PowerMagpie = {};
+            if (typeof this['dwr'] == 'undefined') this.dwr = {};
+            if (typeof dwr['engine'] == 'undefined') dwr.engine = {};
+            if (typeof this['__System'] == 'undefined') this.__System = {};
+
             PowerMagpie._path =  base + '/dwr';
+            __System._path = base + '/dwr';
             
             loadScript(base + '/dwr/interface/PowerMagpie.js', function(){
 
                 PowerMagpie._path =  base + '/dwr';
+                __System._path = base + '/dwr';
+
 
                 loadScript(base + '/dwr/engine.js', function(){
-                    
+
+                    __System._path = base + '/dwr';
                     dwr.engine._defaultPath = base + '/dwr';
-                    dwr.engine.setRpcType(dwr.engine.ScriptTag);                    
-                    
+                    dwr.engine.setRpcType(dwr.engine.ScriptTag);//2.0.1
+                    //dwr.engine._ModeHtmlPoll = true;
+                    //dwr.engine._ModeHtmlCall = true;
+                    //dwr.engine._pollWithXhr = false;
+                    dwr.engine.setActiveReverseAjax(true);
                 });
             });
-            */
+
+            
+            
 
 		
 		    loadScript(base + '/Frameworks/jQuery/jquery-ui-personalized-1.6rc6/jquery-1.3.1.js', function(){
