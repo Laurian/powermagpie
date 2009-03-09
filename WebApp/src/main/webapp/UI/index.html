@@ -28,6 +28,8 @@
 var viewport;
 var nttRoot;
 var ontRoot;
+var pontRoot;
+var annRoot;
 
 Ext.onReady(function(){
 
@@ -91,7 +93,37 @@ Ext.onReady(function(){
                     },{
                         title: 'Predefined Ontologies',
                         autoScroll:true,
-                        contentEl: 'visualisation'
+                        contentEl: 'visualisation',
+                        items:[
+                            new Ext.tree.TreePanel( {
+                                id: 'pont-tree',
+                                animate:true,
+                                containerScroll: true,
+                                rootVisible: false,
+                                root: new Ext.tree.TreeNode({
+                                    id: 'pont-root',
+                                    text: 'Predefined Ontologies',
+                                    allowDrag:false,
+                                    allowDrop:false
+                                })
+                            })]
+                    },{
+                        title: 'Annotations',
+                        autoScroll:true,
+                        contentEl: 'annot',
+                        items:[
+                            new Ext.tree.TreePanel( {
+                                id: 'ann-tree',
+                                animate:true,
+                                containerScroll: true,
+                                rootVisible: false,
+                                root: new Ext.tree.TreeNode({
+                                    id: 'ann-root',
+                                    text: 'Annotations',
+                                    allowDrag:false,
+                                    allowDrop:false
+                                })
+                            })]
                     }]
                 }
              ]
@@ -100,6 +132,8 @@ Ext.onReady(function(){
     // setup
     nttRoot = viewport.findById("ntt-tree").getRootNode();
     ontRoot = viewport.findById("ont-tree").getRootNode();
+    pontRoot = viewport.findById("pont-tree").getRootNode();
+    annRoot = viewport.findById("ann-tree").getRootNode();
 
     nttRoot.getOwnerTree().on('click', function(n){
         //alert(parent.location.href);
@@ -109,6 +143,18 @@ Ext.onReady(function(){
     });
 
     ontRoot.getOwnerTree().on('click', function(n){
+        if(n.attributes.onclick){
+            eval(n.attributes.onclick);
+        }
+    });
+
+    pontRoot.getOwnerTree().on('click', function(n){
+        if(n.attributes.onclick){
+            eval(n.attributes.onclick);
+        }
+    });
+
+    annRoot.getOwnerTree().on('click', function(n){
         if(n.attributes.onclick){
             eval(n.attributes.onclick);
         }
@@ -126,6 +172,12 @@ Ext.onReady(function(){
                         populateOntologies(data);
                     }
     });
+
+    //predefined ontologies
+    populatePOntologies([
+        'http://www.example.org/food.owl',
+        'http://vistology.com/ont/mad_cows_ont.daml'
+    ]);
 
 });
 
@@ -209,7 +261,7 @@ function expandTerm(node, data) {
 
 function callExpandEntity(id, uri, type) {
     //TODO
-    //callInfoEntity(uri);
+    callInfoEntity(uri);
     var node = nttRoot.getOwnerTree().getNodeById(id);
     if (node.populated) return;
 
@@ -255,7 +307,7 @@ function expandEntity(node, data) {
         if ((data[i] + "").indexOf("function (") != -1) continue;
         node.appendChild(
                 new Ext.tree.TreeNode({
-                    text:data[i].URI,
+                    text:data[i].URI + " <img onclick='switch2onto(\""+data[i].URI+"\")' src='Icons/mini_icons2/arrow_right.gif' />",
                     id: node.id + ":ont:" + data[i].URI,
                     cls:'entity',
                     icon: "Icons/R.png",
@@ -267,6 +319,13 @@ function expandEntity(node, data) {
         node.expand();
         node.populated = true;
     }
+}
+
+function switch2onto(uri) {
+    var node = ontRoot.getOwnerTree().getNodeById('ont:' + uri);
+    node.select();
+    node.expand();
+    node.ensureVisible();
 }
 
 /////////// ontologies
@@ -287,6 +346,25 @@ function populateOntologies(data) {
                     })
             );
         ontRoot.expand();
+    }
+}
+
+function populatePOntologies(data) {
+    for (i in data) {
+        if ((data[i] + "").indexOf("function (") != -1) continue;
+        if (pontRoot.findChild("id", "pont:" + data[i]) != null) continue;
+        pontRoot.appendChild(
+                new Ext.tree.TreeNode({
+                    text:data[i],
+                    id: "pont:" + data[i],
+                    cls:'entity',
+                    icon: "Icons/R.png",
+                    allowDrag:false,
+                    populated: false,
+                    onclick: "callExpandPOnt('"+data[i]+"')"
+                    })
+            );
+        pontRoot.expand();
     }
 }
 
@@ -314,11 +392,39 @@ function callExpandOnt(uri) {
     });
 }
 
+function callExpandPOnt(uri) {
+    // TODO
+    //callInfoOntology(uri);
+    var node = pontRoot.getOwnerTree().getNodeById("pont:" + uri);
+
+    var sNode = new Ext.tree.TreeNode({
+                    text:"All concepts",
+                    id: node.id + ":s:",
+                    cls:'entity',
+                    //icon: "Icons/R.png",
+                    allowDrag:false,
+                    populated: false,
+                    onclick: "callExpandPOntTop('"+uri+"')"
+                    });
+    node.appendChild(sNode);
+    
+    // removed matches list
+}
+
 function callExpandOntTop(uri) {
     var node = ontRoot.getOwnerTree().getNodeById("ont:" + uri + ":s:");
     PowerMagpie.expandOntTop(uri, {
         callback:   function(data){
                         expandOntConcepts(node, data);
+                    }
+    });
+}
+
+function callExpandPOntTop(uri) {
+    var node = pontRoot.getOwnerTree().getNodeById("pont:" + uri + ":s:");
+    PowerMagpie.expandOntTop(uri, {
+        callback:   function(data){
+                        expandPOntConcepts(node, data);
                     }
     });
 }
@@ -332,7 +438,39 @@ function callExpandOntClass(id, ont, uri) {
     });
 }
 
+function callExpandPOntClass(id, ont, uri) {
+    var node = pontRoot.getOwnerTree().getNodeById(id);
+    PowerMagpie.expandOntClass(ont, uri, {
+        callback:   function(data){
+                        expandPOntConcepts(node, data);
+                    }
+    });
+}
+
 function expandOntConcepts(node, data) {
+    for (i in data) {
+        if ((data[i] + "").indexOf("function (") != -1) continue;
+        icon = "Icons/" + "R.png";
+        if (data[i].type == 'Individual') icon = "Icons/" + "I.png";
+        if (data[i].type == 'Class') icon = "Icons/" + "C.png";
+        if (data[i].type == 'Property') icon = "Icons/" + "P.png";
+        node.appendChild(
+                new Ext.tree.TreeNode({
+                    text:data[i].localName + " <img onclick='tag(\""+node.id + ":xo:" + data[i].URI+"\")' src='Icons/mini_icons2/tag.gif' />",
+                    id: node.id + ":xo:" + data[i].URI,
+                    cls:'entity',
+                    icon: icon,
+                    allowDrag:false,
+                    populated: false,
+                    onclick: "callExpandOntClass('"+node.id+":xo:"+data[i].URI+"', '"+data[i].ont+"', '"+data[i].URI+"')"
+                    })
+            );
+        node.expand();
+        node.populated = true;
+    }
+}
+
+function expandPOntConcepts(node, data) {
     for (i in data) {
         if ((data[i] + "").indexOf("function (") != -1) continue;
         icon = "Icons/" + "R.png";
@@ -347,13 +485,14 @@ function expandOntConcepts(node, data) {
                     icon: icon,
                     allowDrag:false,
                     populated: false,
-                    onclick: "callExpandOntClass('"+node.id+":xo:"+data[i].URI+"', '"+data[i].ont+"', '"+data[i].URI+"')"
+                    onclick: "callExpandPOntClass('"+node.id+":xo:"+data[i].URI+"', '"+data[i].ont+"', '"+data[i].URI+"')"
                     })
             );
         node.expand();
         node.populated = true;
     }
 }
+
 function expandOnt(node, data) {
     for (i in data) {
         if ((data[i] + "").indexOf("function (") != -1) continue;
@@ -381,7 +520,7 @@ function expandOnt(node, data) {
 function callExpandOntEntity(id, uri, type) {
 
     // TODO
-    //callInfoEntity(uri);
+    callInfoEntity(uri);
 
     var node = ontRoot.getOwnerTree().getNodeById(id);
     if (node.populated) return;
@@ -418,7 +557,7 @@ function expandOntEntity(node, data) {
         if ((data[i] + "").indexOf("function (") != -1) continue;
         node.appendChild(
                 new Ext.tree.TreeNode({
-                    text:data[i],
+                    text:data[i] + " <img onclick='switch2term(\""+data[i]+"\")' src='Icons/mini_icons2/arrow_right.gif' />",
                     id: node.id + ":term:" + data[i],
                     cls:'entity',
                     icon: "Icons/T.png",
@@ -429,6 +568,10 @@ function expandOntEntity(node, data) {
         node.expand();
         node.populated = true;
     }
+}
+
+function switch2term(t) {
+    _select('*', t);
 }
 
 
@@ -475,10 +618,67 @@ function _select(to, searchTerm) {
     node.ensureVisible();
 }
 
+function _selectNode(to, id) {
+    var node = nttRoot.getOwnerTree().getNodeById(id);
+    node.select();
+    node.expand();
+    node.ensureVisible();
+}
+
 function tag(uri) {
     PowerMagpie.send("host", "tag:" + uri);
 }
 
+// INFO
+
+function callInfoEntity(uri) {
+    //alert(parent.location.href);
+    //PowerMagpie.infoEntity(uri, {callback: function(data){infoEntity(data)}});
+}
+
+function infoEntity(data) {
+    //document.location.hash = "select:" + data;
+    document.getElementById('south').innerHTML = "URI <a href='"+data["URI"]+"' target='_new'>" + data["URI"] + "</a><"+"br "+"/>"
+        + "Label " + data["label"] + "<"+"br "+"/>"
+        + "Comment " + data["comment"] + "<"+"br "+"/>"
+        + "Type " + data["type"] + "<"+"br "+"/>"
+        //+ "Properties " + data["P"] + ", "
+        //+ "Instances " + data["I"]
+        + "<"+"br "+"/>"
+        + "<a href='http://watson.kmi.open.ac.uk/WatsonWUI/entity_look_up.html#"+escape(data["URI"])+"' target='_new'>Explore further in Watson</a>";
+}
+
+function callInfoOntology(uri) {
+    //PowerMagpie.infoOntology(uri, {callback: function(data){infoOntology(data)}});
+}
+
+function infoOntology(data) {
+    document.getElementById('south').innerHTML = "URI <a href='"+data["URI"]+"' target='_new'>" + data["URI"] + "</a><"+"br "+"/>"
+        + "DL Expressivity " + data["DL"] + "<"+"br "+"/>"
+        + "Languages " + data["lang"] + "<"+"br "+"/>"
+        + "Size " + data["size"] + " bytes<"+"br "+"/>"
+        //+ "Classes " + data["C"] + ", "
+        //+ "Properties " + data["P"] + ", "
+        //+ "Instances " + data["I"]
+        + "<"+"br "+"/>"
+        + "<a href='http://watson.kmi.open.ac.uk/WatsonWUI/onto_check.html?q="+escape(data["URI"])+"' target='_new'>Explore further in Watson</a>";
+}
+
+function _tagged(nid, term, uri, node) {
+        if (annRoot.findChild("id", "ann:" + nid) != null) return;
+        annRoot.appendChild(
+                new Ext.tree.TreeNode({
+                    text:   term,
+                    id:     "ann:" + nid,
+                    cls:    'entity',
+                    icon:   "Icons/T.png",
+                    allowDrag:  false,
+                    populated:  false//,
+                    //onclick:    "callExpandTerm('"+data[i]+"')"
+                    })
+            );
+        annRoot.expand();
+}
     //--><!]]></script>
   </head>
   <body>
@@ -493,11 +693,15 @@ function tag(uri) {
 
   <div id="south">
     <!-- info -->
-    Please select some text on the page, then click again on the bookmarklet.
+    ...
   </div>
 
   <div id="visualisation">
-      TODO
+      
+  </div>
+
+  <div id="annot">
+      
   </div>
   
   </body>
