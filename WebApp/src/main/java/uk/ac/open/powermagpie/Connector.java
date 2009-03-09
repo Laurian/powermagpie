@@ -149,6 +149,27 @@ public class Connector {
         return uris;
     }
 
+    private SemanticContentResult getOntology(String uri) {
+        Vector<Match> v = new Vector<Match>();
+        Iterator<Entry<String, Term>> it = context.terms().entrySet().iterator();
+        while(it.hasNext()) {
+            v.addAll(it.next().getValue().matches());
+        }
+
+        //Collections.sort(v);
+
+
+        Iterator<Match> it2 = v.iterator();
+        int i = 0;
+        while(it2.hasNext()) {
+            SemanticContentResult o = it2.next().getSemanticContentResult();
+            if (o.getURI().equals(uri))
+                return o;
+        }
+
+        return null;
+    }
+
     private Vector<EntityResult> getEntities(String uri) {
         Vector<EntityResult> v = new Vector<EntityResult>();
         Iterator<Entry<String, Term>> it  = context.terms().entrySet().iterator();
@@ -299,6 +320,62 @@ public class Connector {
         Collection scriptSessions = ctx.getAllScriptSessions();//getScriptSessionsByPage(ctx.getCurrentPage());
         Util all = new Util(scriptSessions);
         all.addScript(script);
+    }
+
+    public void selectNode(String to, String term) {
+        ScriptBuffer script = new ScriptBuffer();
+        script.appendScript("_selectNode('" + to + "', '" + term + "');");
+        WebContext ctx = WebContextFactory.get();
+        Collection scriptSessions = ctx.getAllScriptSessions();//getScriptSessionsByPage(ctx.getCurrentPage());
+        Util all = new Util(scriptSessions);
+        all.addScript(script);
+    }
+
+    public void tagged(String nid, String term, String uri, String node) {
+        ScriptBuffer script = new ScriptBuffer();
+        script.appendScript("_tagged('" + nid + "', '" + term + "', '" + uri + "', '" + node + "');");
+        WebContext ctx = WebContextFactory.get();
+        Collection scriptSessions = ctx.getAllScriptSessions();//getScriptSessionsByPage(ctx.getCurrentPage());
+        Util all = new Util(scriptSessions);
+        all.addScript(script);
+    }
+
+    public HashMap infoEntity(String uri) {
+        HashMap<String, String> h = new HashMap<String, String>();
+        EntityResult e = getEntities(uri).firstElement();
+        h.put("URI", uri);
+        h.put("localName", NameSpace.splitNamespace(uri)[1]);
+        h.put("namespace", NameSpace.splitNamespace(uri)[0]);
+        h.put("type", e.getType());
+
+        h.put("label", e.getLabel());
+        h.put("comment", e.getComment());
+
+        return h;
+    }
+
+    public HashMap infoOntology(String uri) {
+        SemanticContentResult o =  getOntology(uri);
+
+        HashMap<String, String> h = new HashMap<String, String>();
+
+        String lang = "";
+        String[] langs = o.getLanguages();
+        for (int i = 0; i < langs.length; i++) {
+            lang += " " + langs[i];
+        }
+
+        h.put("URI", uri);
+
+        h.put("size", Long.toString(o.getSize()));
+        h.put("DL", o.getDLExpressivness());
+        h.put("lang", lang);
+        h.put("C", Integer.toString(o.getNBClasses()));
+        h.put("P", Integer.toString(o.getNBProperties()));
+        h.put("I", Integer.toString(o.getNBIndividuals()));
+
+
+        return h;
     }
 
 }
