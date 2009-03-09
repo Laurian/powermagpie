@@ -130,8 +130,13 @@ function sendMatch(searchTerm, match, count){
 var lastNid = "nil";
 
 function showMatch(nid) {
+    var m = document.getElementById(lastNid);
+    if(m != null) {
+        m.style.backgroundColor = "lightgrey";
+        m.style.color = "black";
+    }
     lastNid = nid;
-    var m = document.getElementById(nid);
+    m = document.getElementById(nid);
     if(m == null) console.log(nid);
     m.style.backgroundColor = "red";
     m.style.color = "white";
@@ -140,28 +145,61 @@ function showMatch(nid) {
 
 function showNTT(nid, searchTerm) {
     showMatch(nid);
-    PowerMagpie.select('*', searchTerm);
+    if ($('#' + nid).attr('node') != null
+            && $('#' + nid).attr('node').indexOf(':ntt:') != -1
+        ) {
+        PowerMagpie.selectNode('*', $('#' + nid).attr('node'));
+
+    } else {
+        PowerMagpie.select('*', searchTerm);
+    }
 }
 
-function tag(uri) {
-    console.log(uri);
-    uri = uri.substring(uri.lastIndexOf(":ntt:") + 5);
+function remove() {
+    $("#" + lastNid).removeAttr('about')
+        .removeAttr('rel')
+        .removeAttr('resource')
+        .removeAttr('property')
+        .removeAttr('node');
+    var m = document.getElementById(lastNid);
+    if(m != null) {
+        m.style.backgroundColor = "lightgrey";
+        m.style.color = "black";
+    }
+}
+
+function tag(node) {
+    console.log(node);
+    if (node.lastIndexOf(":ntt:") != -1)
+        uri = node.substring(node.lastIndexOf(":ntt:") + 5);
+
+    if (node.lastIndexOf(":xo:") != -1)
+        uri = node.substring(node.lastIndexOf(":xo:") + 5);
+
     console.log(uri);
     showMatch(lastNid);
     var base = document.location.href.substring(0, document.location.href.length - document.location.hash.length);
 	var id = lastNid;
-	var about = base + "#" + id;
-	var seeAlso = 'http://purl.org/net/powermagpie/store/' + (new UUID() + '').toLowerCase();
+    //#xpointer(string-range(//P,&quot;FOO&quot;))
+    //
+	var about = base + '#xpointer(string-range('
+        + window['http://purl.org/net/powermagpie'].getXPath($("#" + lastNid).parent()[0]).toLowerCase()
+        + ',&quot;' + $("#" + lastNid).text() + '&quot;))' ;
+	//var seeAlso = 'http://purl.org/net/powermagpie/store/' + (new UUID() + '').toLowerCase();
     console.log(lastNid);
     $("#" + lastNid).attr({
 				'about': 	about,
-                'instanceof': uri,
-				'rel': 'rdfs:seeAlso',
-				'resource':	seeAlso,
+                //'instanceof': uri,
+				'rel': 'oguid:identical',
+				'resource':	uri,
 				'property': 'content:item',
 				'xmlns:content': 'http://purl.org/rss/1.0/modules/content/',
-				'xmlns:rdfs': 'http://www.w3.org/2000/01/rdf-schema#'
+				//'xmlns:rdfs': 'http://www.w3.org/2000/01/rdf-schema#',
+                'xmlns:oguid': 'http://openguid.net/rdf#',
+                'node': node
 			});
+
+     PowerMagpie.tagged(lastNid, $("#" + lastNid).text(), uri, node);
 }
 (function(){
 
@@ -176,7 +214,7 @@ function tag(uri) {
                         with(window[namespace]){
     var pmui = document.createElement('div');
     pmui.id = "c3f22685-79cc-4ed6-b833-2ff9f61a5a33";
-    pmui.innerHTML = "<div id='c3f22685-79cc-4ed6-b833-2ff9f61a5a33-logo'><img id='pmproc' src='"+base+"/Icons/mini_icons2/wand.gif' onclick='process();' /><img src='"+base+"/title.png' /></div>"
+    pmui.innerHTML = "<div id='c3f22685-79cc-4ed6-b833-2ff9f61a5a33-logo'><div id='pmproc'><img src='"+base+"/Icons/mini_icons2/wand.gif' onclick='process();' /><img src='"+base+"/Icons/mini_icons2/cross.gif' onclick='remove();' /></div><img src='"+base+"/title.png' /></div>"
         +"<iframe id='pmframe' name='pmframe' frameborder='0' scrolling='no' src='"+base+"/UI/?"+Math.random()+"#"+session+"'></iframe>";
     
     document.body.appendChild(pmui);
