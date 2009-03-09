@@ -14,6 +14,14 @@
 #c3f22685-79cc-4ed6-b833-2ff9f61a5a33-logo {
     height: 30px;
     background-image: url(../Frameworks/ExtJS/2.2.1/resources/images/gray/panel/white-top-bottom.gif);
+    vertical-align: top;
+}
+
+#pmproc {
+    float: right;
+    margin-top: 10px;
+    margin-right: 100px;
+    cursor: pointer;
 }
 
 #c3f22685-79cc-4ed6-b833-2ff9f61a5a33 iframe {
