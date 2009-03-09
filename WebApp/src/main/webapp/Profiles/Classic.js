@@ -176,7 +176,7 @@ function tag(uri) {
                         with(window[namespace]){
     var pmui = document.createElement('div');
     pmui.id = "c3f22685-79cc-4ed6-b833-2ff9f61a5a33";
-    pmui.innerHTML = "<div id='c3f22685-79cc-4ed6-b833-2ff9f61a5a33-logo'><img src='"+base+"/title.png' /><img src='"+base+"/Icons/mini_icons2/wand.gif' onclick='process();' /></div>"
+    pmui.innerHTML = "<div id='c3f22685-79cc-4ed6-b833-2ff9f61a5a33-logo'><img id='pmproc' src='"+base+"/Icons/mini_icons2/wand.gif' onclick='process();' /><img src='"+base+"/title.png' /></div>"
         +"<iframe id='pmframe' name='pmframe' frameborder='0' scrolling='no' src='"+base+"/UI/?"+Math.random()+"#"+session+"'></iframe>";
     
     document.body.appendChild(pmui);
