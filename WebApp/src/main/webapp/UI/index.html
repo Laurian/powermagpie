@@ -179,6 +179,47 @@ Ext.onReady(function(){
         'http://vistology.com/ont/mad_cows_ont.daml'
     ]);
 
+    // dummy ontology
+    dont = new Ext.tree.TreeNode({
+                    text:   "Zee Ontology",
+                    id:     "pont:http://example.com/",
+                    cls:    'entity',
+                    icon:   "Icons/R.png",
+                    allowDrag:  false,
+                    populated:  true
+                    });
+    pontRoot.appendChild(dont);
+
+    dservice = new Ext.tree.TreeNode({
+                    text:   "Service" + " <img onclick='stag()' src='Icons/mini_icons2/tag.gif' />",
+                    id:     "pont:http://example.com/Service",
+                    cls:    'entity',
+                    icon:   "Icons/C.png",
+                    allowDrag:  false,
+                    populated:  false
+                    });
+
+    dop = new Ext.tree.TreeNode({
+                    text:   "Operation" + " <img onclick='otag()' src='Icons/mini_icons2/tag.gif' />",
+                    id:     "pont:http://example.com/Operation",
+                    cls:    'entity',
+                    icon:   "Icons/C.png",
+                    allowDrag:  false,
+                    populated:  false
+                    });
+
+    dparam = new Ext.tree.TreeNode({
+                    text:   "Parameter" + " <img onclick='ptag()' src='Icons/mini_icons2/tag.gif' />",
+                    id:     "pont:http://example.com/Parameter",
+                    cls:    'entity',
+                    icon:   "Icons/C.png",
+                    allowDrag:  false,
+                    populated:  false
+                    });
+    dont.appendChild(dservice);
+    dont.appendChild(dop);
+    dont.appendChild(dparam);
+
 });
 
 //////////// callbacks ///////////
@@ -678,6 +719,20 @@ function _tagged(nid, term, uri, node) {
                     })
             );
         annRoot.expand();
+}
+
+function _log(line) {
+    document.getElementById('south').innerHTML = line;
+}
+
+function stag() {
+    PowerMagpie.send('host', 'stag:');
+}
+function ptag() {
+    PowerMagpie.send('host', 'ptag:');
+}
+function otag() {
+    PowerMagpie.send('host', 'otag:');
 }
     //--><!]]></script>
   </head>
