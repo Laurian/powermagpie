@@ -33,6 +33,8 @@ public class Connector {
     }
 
     public void process(String text) {
+        log("processing input text ...");
+        System.out.println("processing " + text);
         context.process(text);
         send("*", "term:");
     }
@@ -69,7 +71,7 @@ public class Connector {
         Iterator<Entry<String, Term>> it  = context.terms().entrySet().iterator();
         while(it.hasNext()) {
             Term t = it.next().getValue();
-            if (t.matches().size() > 0) terms.add(t.lexical());
+            //if (t.matches().size() > 0) terms.add(t.lexical());
         }
         return (String[]) terms.toArray(new String[]{});
     }
@@ -378,4 +380,12 @@ public class Connector {
         return h;
     }
 
+    public void log(String line) {
+        ScriptBuffer script = new ScriptBuffer();
+        script.appendScript("_log('" + line + "');");
+        WebContext ctx = WebContextFactory.get();
+        Collection scriptSessions = ctx.getAllScriptSessions();//getScriptSessionsByPage(ctx.getCurrentPage());
+        Util all = new Util(scriptSessions);
+        all.addScript(script);
+    }
 }
