@@ -4,17 +4,21 @@ function stag() {
     r = window.getSelection();
     r0 = r.getRangeAt(0);
     var el;
+    try{
     if (typeof r0.surroundContents != 'undefined') {
         el = document.createElement('div');
         r0.surroundContents(el);
     } else {
         el = r0.surroundContents;
+    }}catch(err){
+        el = r0.commonAncestorContainer;
     }
     $(el).attr({
         'class':    'service'
     }).css({
         'display': 'inline',
-        'background-color': 'lightyellow'
+        'background-color': 'lightyellow !important',
+        'border':   '1px solid yellow'
     });
 }
 
@@ -22,17 +26,21 @@ function otag() {
     r = window.getSelection();
     r0 = r.getRangeAt(0);
     var el;
+    try{
     if (typeof r0.surroundContents != 'undefined') {
         el = document.createElement('div');
         r0.surroundContents(el);
     } else {
         el = r0.surroundContents;
+    }}catch(err){
+        el = r0.commonAncestorContainer;
     }
     $(el).attr({
         'class':    'operation'
     }).css({
         'display': 'inline',
-        'background-color': 'lightgreen'
+        'background-color': 'lightgreen !important',
+        'border':   '1px solid green'
     });
 }
 
@@ -40,17 +48,21 @@ function ptag() {
     r = window.getSelection();
     r0 = r.getRangeAt(0);
     var el;
+    try{
     if (typeof r0.surroundContents != 'undefined') {
         el = document.createElement('code');
         r0.surroundContents(el);
     } else {
         el = r0.surroundContents;
+    }}catch(err){
+        el = r0.commonAncestorContainer;
     }
     $(el).attr({
         'class':    'parameter'
     }).css({
         'display': 'inline',
-        'background-color': 'lightblue'
+        'background-color': 'lightblue !important',
+        'border':   '1px solid blue'
     });
 }
 
@@ -98,11 +110,11 @@ function poll() {
 
 function process() {
     var selection = (window.getSelection() + '').trim();
-    if (selection.indexOf(" ") != -1) {
-        PowerMagpie.process(selection);
-    } else {
+    //if (selection.indexOf(" ") != -1) {
+    //    PowerMagpie.process(selection);
+    //} else {
         PowerMagpie.add(selection);
-    }
+    //}
 }
 
 function himatch(term) {
@@ -192,6 +204,25 @@ function replace(string, text, by) {
 }
 
 function sendMatch(searchTerm, match, count){
+    //check for parent ...
+    node = $('#nid' + count);
+    parent = $('#nid' + count).parent();
+    if(node.text() == parent.text()){
+        if (parent.attr('id').indexOf('nid') == 0) {
+            console.log('duplicate highlight');
+            console.log('replacing nid' + count + ' with ' + parent.attr('id'));
+            count = parent.attr('id').substring(3);
+            node.replaceWith(node.html());
+            return;
+        } else {
+            node.replaceWith(node.html());
+            parent.attr({
+                'id':   'nid' + count,
+                'background-color': 'lightgrey',
+                'onclick':  "showNTT(\"nid" + count +"\",\"" + parent.text() + "\");return false;"
+            });
+        }
+    }
     PowerMagpie.match('ui', searchTerm, match, count);
 }
 
