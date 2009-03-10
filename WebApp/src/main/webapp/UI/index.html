@@ -180,6 +180,7 @@ Ext.onReady(function(){
     ]);
 
     // dummy ontology
+    // input, output, address
     dont = new Ext.tree.TreeNode({
                     text:   "Zee Ontology",
                     id:     "pont:http://example.com/",
@@ -285,7 +286,8 @@ function expandTerm(node, data) {
 
     }
 
-    node.appendChild(
+    if (nttRoot.getOwnerTree().getNodeById(node.id + "@occ:") == null) {
+        node.appendChild(
                 new Ext.tree.TreeNode({
                     text: "<i>occurences</i>",
                     id: node.id + "@occ:",
@@ -294,8 +296,8 @@ function expandTerm(node, data) {
                     allowDrag:false,
                     populated: false
                 })
-       );
-
+        );
+    }
     //notify parent
     //PowerMagpie.send(session + '#pm', node.id);
 }
@@ -631,6 +633,7 @@ function message(to, msg) {
 function _match(to, searchTerm, match, count) {
     //if (to != session + "#ui") return;
     var node = nttRoot.getOwnerTree().getNodeById("ntt:" + searchTerm + "@occ:");
+    if (nttRoot.findChild("id", "nid:" + count) != null) return;
     node.appendChild(
                 new Ext.tree.TreeNode({
                     text: match,
