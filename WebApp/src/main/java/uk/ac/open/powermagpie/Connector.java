@@ -71,7 +71,8 @@ public class Connector {
         Iterator<Entry<String, Term>> it  = context.terms().entrySet().iterator();
         while(it.hasNext()) {
             Term t = it.next().getValue();
-            //if (t.matches().size() > 0) terms.add(t.lexical());
+            //if (t.matches().size() > 0)
+            terms.add(t.lexical());
         }
         return (String[]) terms.toArray(new String[]{});
     }
