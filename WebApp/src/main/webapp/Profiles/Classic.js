@@ -1,5 +1,59 @@
 //TODO move into PM namespace
 
+function stag() {
+    r = window.getSelection();
+    r0 = r.getRangeAt(0);
+    var el;
+    if (typeof r0.surroundContents != 'undefined') {
+        el = document.createElement('div');
+        r0.surroundContents(el);
+    } else {
+        el = r0.surroundContents;
+    }
+    $(el).attr({
+        'class':    'service'
+    }).css({
+        'display': 'inline',
+        'background-color': 'lightyellow'
+    });
+}
+
+function otag() {
+    r = window.getSelection();
+    r0 = r.getRangeAt(0);
+    var el;
+    if (typeof r0.surroundContents != 'undefined') {
+        el = document.createElement('div');
+        r0.surroundContents(el);
+    } else {
+        el = r0.surroundContents;
+    }
+    $(el).attr({
+        'class':    'operation'
+    }).css({
+        'display': 'inline',
+        'background-color': 'lightgreen'
+    });
+}
+
+function ptag() {
+    r = window.getSelection();
+    r0 = r.getRangeAt(0);
+    var el;
+    if (typeof r0.surroundContents != 'undefined') {
+        el = document.createElement('code');
+        r0.surroundContents(el);
+    } else {
+        el = r0.surroundContents;
+    }
+    $(el).attr({
+        'class':    'parameter'
+    }).css({
+        'display': 'inline',
+        'background-color': 'lightblue'
+    });
+}
+
 function message(to, msg) {
     console.log(to + " :: " + msg);
     //TODO use "to"
@@ -16,9 +70,23 @@ function message(to, msg) {
             showMatch("nid" + msg.substring(4));
         }
 
+        if (msg.indexOf('stag:') != -1){
+            stag(msg.substring(4));
+            return;
+        }
+        if (msg.indexOf('ptag:') != -1){
+            ptag(msg.substring(4));
+            return;
+        }
+        if (msg.indexOf('otag:') != -1){
+            otag(msg.substring(4));
+            return;
+        }
+
         if (msg.indexOf('tag:') != -1){
             tag(msg.substring(4));
         }
+
     }
 
 }
