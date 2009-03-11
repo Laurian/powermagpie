@@ -66,6 +66,72 @@ function ptag() {
     });
 }
 
+function atag() {
+    r = window.getSelection();
+    r0 = r.getRangeAt(0);
+    var el;
+    try{
+    if (typeof r0.surroundContents != 'undefined') {
+        el = document.createElement('span');
+        r0.surroundContents(el);
+    } else {
+        el = r0.surroundContents;
+    }}catch(err){
+        el = r0.commonAncestorContainer;
+    }
+    $(el).attr({
+        'class':    'address'
+    }).css({
+        'display': 'inline',
+        'background-color': 'lightgrey !important',
+        'border':   '1px solid black'
+    });
+}
+
+function itag() {
+    r = window.getSelection();
+    r0 = r.getRangeAt(0);
+    var el;
+    try{
+    if (typeof r0.surroundContents != 'undefined') {
+        el = document.createElement('span');
+        r0.surroundContents(el);
+    } else {
+        el = r0.surroundContents;
+    }}catch(err){
+        el = r0.commonAncestorContainer;
+    }
+    $(el).attr({
+        'class':    'input'
+    }).css({
+        'display': 'inline',
+        'background-color': 'lightblue !important',
+        'border':   '1px solid green'
+    });
+}
+
+function utag() {
+    r = window.getSelection();
+    r0 = r.getRangeAt(0);
+    var el;
+    try{
+    if (typeof r0.surroundContents != 'undefined') {
+        el = document.createElement('span');
+        r0.surroundContents(el);
+    } else {
+        el = r0.surroundContents;
+    }}catch(err){
+        el = r0.commonAncestorContainer;
+    }
+    $(el).attr({
+        'class':    'parameter'
+    }).css({
+        'display': 'inline',
+        'background-color': 'lightblue !important',
+        'border':   '1px solid red'
+    });
+}
+
 function message(to, msg) {
     console.log(to + " :: " + msg);
     //TODO use "to"
@@ -92,6 +158,20 @@ function message(to, msg) {
         }
         if (msg.indexOf('otag:') != -1){
             otag(msg.substring(4));
+            return;
+        }
+        if (msg.indexOf('itag:') != -1){
+            itag(msg.substring(4));
+            return;
+        }
+
+        if (msg.indexOf('atag:') != -1){
+            atag(msg.substring(4));
+            return;
+        }
+
+        if (msg.indexOf('utag:') != -1){
+            utag(msg.substring(4));
             return;
         }
 
@@ -259,7 +339,9 @@ function remove() {
         .removeAttr('rel')
         .removeAttr('resource')
         .removeAttr('property')
-        .removeAttr('node');
+        .removeAttr('node')
+        .removeAttr('title')
+        .removeClass('mref');
     var m = document.getElementById(lastNid);
     if(m != null) {
         m.style.backgroundColor = "lightgrey";
@@ -291,12 +373,13 @@ function tag(node) {
                 //'instanceof': uri,
 				'rel': 'oguid:identical',
 				'resource':	uri,
+                'title':    uri,
 				'property': 'content:item',
 				'xmlns:content': 'http://purl.org/rss/1.0/modules/content/',
 				//'xmlns:rdfs': 'http://www.w3.org/2000/01/rdf-schema#',
                 'xmlns:oguid': 'http://openguid.net/rdf#',
                 'node': node
-			});
+			}).addClass('mref');
 
      PowerMagpie.tagged(lastNid, $("#" + lastNid).text(), uri, node);
 }
