@@ -182,8 +182,8 @@ Ext.onReady(function(){
     // dummy ontology
     // input, output, address
     dont = new Ext.tree.TreeNode({
-                    text:   "Zee Ontology",
-                    id:     "pont:http://example.com/",
+                    text:   "http://www.wsmo.org/ns/hrests#",
+                    id:     "pont:http://www.wsmo.org/ns/hrests#",
                     cls:    'entity',
                     icon:   "Icons/R.png",
                     allowDrag:  false,
@@ -193,21 +193,25 @@ Ext.onReady(function(){
 
     dservice = new Ext.tree.TreeNode({
                     text:   "Service" + " <img onclick='stag()' src='Icons/mini_icons2/tag.gif' />",
-                    id:     "pont:http://example.com/Service",
+                    id:     "pont:http://www.wsmo.org/ns/hrests#Service",
                     cls:    'entity',
                     icon:   "Icons/C.png",
                     allowDrag:  false,
                     populated:  false
                     });
 
+    dont.appendChild(dservice);
+
     dop = new Ext.tree.TreeNode({
                     text:   "Operation" + " <img onclick='otag()' src='Icons/mini_icons2/tag.gif' />",
-                    id:     "pont:http://example.com/Operation",
+                    id:     "pont:http://www.wsmo.org/ns/hrests#Operation",
                     cls:    'entity',
                     icon:   "Icons/C.png",
                     allowDrag:  false,
                     populated:  false
                     });
+
+    dont.appendChild(dop);
 
     dparam = new Ext.tree.TreeNode({
                     text:   "Parameter" + " <img onclick='ptag()' src='Icons/mini_icons2/tag.gif' />",
@@ -217,9 +221,44 @@ Ext.onReady(function(){
                     allowDrag:  false,
                     populated:  false
                     });
-    dont.appendChild(dservice);
-    dont.appendChild(dop);
+
     dont.appendChild(dparam);
+
+    daddr = new Ext.tree.TreeNode({
+                    text:   "Address" + " <img onclick='atag()' src='Icons/mini_icons2/tag.gif' />",
+                    id:     "pont:http://example.com/Address",
+                    cls:    'entity',
+                    icon:   "Icons/C.png",
+                    allowDrag:  false,
+                    populated:  false
+                    });
+
+    dont.appendChild(daddr);
+
+    din = new Ext.tree.TreeNode({
+                    text:   "Input" + " <img onclick='itag()' src='Icons/mini_icons2/tag.gif' />",
+                    id:     "pont:http://example.com/Input",
+                    cls:    'entity',
+                    icon:   "Icons/C.png",
+                    allowDrag:  false,
+                    populated:  false
+                    });
+
+    dont.appendChild(din);
+
+    dout = new Ext.tree.TreeNode({
+                    text:   "Output" + " <img onclick='utag()' src='Icons/mini_icons2/tag.gif' />",
+                    id:     "pont:http://example.com/Output",
+                    cls:    'entity',
+                    icon:   "Icons/C.png",
+                    allowDrag:  false,
+                    populated:  false
+                    });
+    dont.appendChild(dout);
+    
+
+    
+    
 
 });
 
@@ -736,6 +775,15 @@ function ptag() {
 }
 function otag() {
     PowerMagpie.send('host', 'otag:');
+}
+function itag() {
+    PowerMagpie.send('host', 'itag:');
+}
+function utag() {
+    PowerMagpie.send('host', 'utag:');
+}
+function atag() {
+    PowerMagpie.send('host', 'atag:');
 }
     //--><!]]></script>
   </head>
