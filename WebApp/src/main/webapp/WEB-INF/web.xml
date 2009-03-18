@@ -3,6 +3,9 @@
 <web-app>
     <display-name>PowerMagpie Web Application</display-name>
     <listener>
+        <listener-class>uk.ac.open.powermagpie.AppListener</listener-class>
+    </listener>
+    <listener>
         <listener-class>org.directwebremoting.servlet.EfficientShutdownServletContextAttributeListener</listener-class>
     </listener>
     <listener>
